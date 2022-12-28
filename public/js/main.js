@@ -63,9 +63,16 @@ async function displayStore() {
 
 }
 
-function displayCategory(categories, subcategories, products, filter = undefined) {
-    let category = categories[0] //TODO: make this filterable from link
-    displaySubCategories(category, subcategories, products, filter)
+function urlGetCategory() {
+    let url = document.URL.split("?")[1]
+    let params = new URLSearchParams(url)
+    return params.get("id") - 1 // index = id - 1 because the categories are placed sorted in an array
+}
+
+function displayCategory(categories, subcategories, products) {
+    let categoryId = parseInt(urlGetCategory())
+    let category = categories[categoryId]
+    displaySubCategories(category, subcategories, products)
 }
 
 function displaySubCategories(category, subcategories, products, filter = undefined) {
