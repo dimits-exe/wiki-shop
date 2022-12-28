@@ -6,12 +6,20 @@ const SHOP_API_URL = "https://wiki-shop.onrender.com"
 const CATEGORY_TEMPLATE = document.getElementById("categories-template")
 const CATEGORY_CONTAINER = document.getElementById("categories-container")
 
+const SUBCATEGORY_TEMPLATE = document.getElementById("subcategory-template")
+const STORE_CONTAINER = document.getElementById("store-container")
+
 loadFrontPage()
+displayStore()
 
 
 function loadFrontPage() {
-    let load = categories => displayTemplate(CATEGORY_TEMPLATE.textContent, {categories: categories}, CATEGORY_CONTAINER)
-    getCategories().then(categories => load(categories), err => onError(err))
+    // if we are indeed on the front page
+    // zafeiri xero oti einai apaisio pls min me skotoseis exo oikogeneia
+    if (CATEGORY_CONTAINER !== null) {
+        let load = categories => displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: categories }, CATEGORY_CONTAINER)
+        getCategories().then(categories => load(categories), err => onError(err))
+    }
 }
 
 /**
@@ -21,7 +29,6 @@ function loadFrontPage() {
  * @param {HTMLElement} container the html container of the template
  */
 function displayTemplate(template, obj, container) {
-    console.log(obj);
     let compiledTemplate = Handlebars.compile(template)
     container.innerHTML = compiledTemplate(obj)
     console.log(compiledTemplate(obj));
@@ -40,16 +47,20 @@ function getCategories() {
  * Create a store object to hold information about the categories, subcategories
  * and products.
  */
-function displayStore() {
+async function displayStore() {
     let subcategories = {}
-    let products = {}
+    let products = []
+    let categories
 
-    Promise.all([
-        getCategories().then(categories => getSubcategories(categories, subcategories)),
-        getCategories().then(categories => getProducts(categories, products))
-    ])
-    .then(getCategories().then(categories => displayStore(categories, subcategories, products))) // this is idiotic and an antipattern 
-    
+    try {
+        categories = await getCategories()
+        await getSubcategories(categories, subcategories)
+        await getProducts(categories, products)
+        displayCategory(categories, subcategories, products)
+    } catch (error) {
+        onError(error)
+    }
+
 }
 
 function displayCategory(categories, subcategories, products, filter = undefined) {
@@ -57,19 +68,23 @@ function displayCategory(categories, subcategories, products, filter = undefined
     displaySubCategories(category, subcategories, products, filter)
 }
 
-function displaySubCategories(category, subcategories, products, filter = undefined){
+function displaySubCategories(category, subcategories, products, filter = undefined) {
     let selectedSubcategories = subcategories[category.id]
-    // filter subcategories
-    // handlebars code goes here
-    for(let subcategoryId in selectedSubcategories) {
-        displayProducts(products.filter(
-            product => product.subcategory_id === subcategoryId))
-    }
-}
 
-function displayProducts(products) {
-    for(let product of products) {
-        //handlebars code goes here
+    // TODO: filter subcategories
+    for (let subcategory of selectedSubcategories) {
+        let selectedProducts = products.flat().filter(
+            product => product.subcategory_id === subcategory.id)
+
+        let subcategoryDisplay = {
+            name: subcategory.title,
+            products: selectedProducts
+        }
+
+        const container = document.createElement("div")
+        displayTemplate(SUBCATEGORY_TEMPLATE.textContent, subcategoryDisplay, container)
+        console.log(container.innerHTML);
+        STORE_CONTAINER.appendChild(container)
     }
 }
 
@@ -93,11 +108,11 @@ function getSubcategories(categories, subcategories) {
     }
 
     for (let category of categories) {
-        promises.push(new Promise(() =>
-            fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
-                + "/subcategories", { method: "GET" })
-                .then(obj => obj.json())
-                .then(subCategoryList => addSubCategory(subCategoryList)))
+        promises.push(new Promise(resolve =>
+            resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
+                    + "/subcategories", { method: "GET" })
+                    .then(obj => obj.json())
+                    .then(subCategoryList => addSubCategory(subCategoryList))))
         )
     }
 
@@ -118,18 +133,18 @@ function getProducts(categories, products) {
      * respective category.
      * @param {obj} productList an array of product objects
      */
-    function addProducts(categoryId, productList) {
-        products[categoryId] = productList
+    function addProducts(productList) {
+        products.push(productList)
     }
 
     for (let category of categories) {
-        let addProductsToCategory = products => addProducts(category.id, products)
+        let addProductsToCategory = products => addProducts(products)
 
-        promises.push(new Promise(() =>
-            fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
+        promises.push(new Promise(resolve =>
+            resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
                 + "/products", { method: "GET" })
                 .then(res => res.json())
-                .then(productList => addProductsToCategory(productList)))
+                .then(productList => addProductsToCategory(productList))))
         )
     }
 

@@ -12,21 +12,27 @@
     <link rel="icon" type="image/x-icon" href="resources/logo_small.ico">
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="js/main.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript" defer></script>
     <link rel="stylesheet" href="css/style.css">
 
-    <script id="categories-template" type="text/x-handlebars-template">
-        {{#each category}}
-            <h3>{{title}}</h3>
-            {{#each subcategory}}
-                <h4>{{title}}</h4>
-                
-                {{#each products}}
-
-                {{/each}}
+    <script id="subcategory-template" type="text/x-handlebars-template">
+        <h2>{{name}}</h2>
+        <article class="category-list">
+            {{#each products}}
+                <article class="category">
+                    <h3>
+                        {{title}}
+                    </h3>
+                    <a href="category.html?id={{id}}">
+                        <img alt={{title}} src={{image}}/>
+                    </a>
+                    <p>{{description}}</p>
+                    <var>{{cost}}$</var>
+                </article>
             {{/each}}
-        {{/each}}
+        </article>
     </script>
+
 </head>
 
 <body>
@@ -69,7 +75,7 @@
             amet do id exercitation quis amet. Ipsum aliqua ullamco dolor fugiat laborum.
         </article>
 
-        <article id="categories-container">
+        <article id="store-container">
             <!-- Handlebars content goes here -->
         </article>
 
@@ -84,15 +90,15 @@
         <address id="footer-address">
             <span>
                 <img alt="location" src="resources/map_pin_icon.png" />
-                    Address: Lamponos 9, 10434 Athens
+                Address: Lamponos 9, 10434 Athens
             </span>
             <span>
                 <img alt="telephone" src="resources/phone_icon.png" />
-                    Telephone: +306942458
+                Telephone: +306942458
             </span>
             <span>
                 <img alt="email" src="resources/mail_icon.png" />
-                    Email: faymetrics@gmail.com
+                Email: faymetrics@gmail.com
             </span>
         </address>
         <section class="social-media-bar">
