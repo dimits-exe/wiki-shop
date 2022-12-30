@@ -33,6 +33,18 @@
         </article>
     </script>
 
+    <script id="subcategories-menu" type="text/x-handlebars-template">
+        <fieldset>
+            <legend>I would like to browse:</legend>
+            {{#each subcategories}}
+                <input type="radio" id="data-category-{{id}}" name="categories" value="{{id}}"/>
+                <label for="data=category-{{id}}">{{title}}</label>
+            {{/each}}
+            <input type="radio" id="data-category-all" name="categories" value="all"/>
+            <label for="data=category-all">{{title}}</label>
+        </fieldset>
+    </script>
+
 </head>
 
 <body>
@@ -75,8 +87,14 @@
             amet do id exercitation quis amet. Ipsum aliqua ullamco dolor fugiat laborum.
         </article>
 
-        <article id="store-container">
-            <!-- Handlebars content goes here -->
+        <article class="navigable-container">
+            <article id="store-container">
+                <!-- Handlebars content goes here -->
+            </article>
+    
+            <nav id="subcategories-menu">
+                <!-- Handlebars content goes here-->
+            </nav>
         </article>
 
     </main>

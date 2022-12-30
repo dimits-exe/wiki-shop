@@ -456,6 +456,11 @@ footer>a {
     max-height: 7em;
 }
 
+.navigable-container {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
+
 /* ======= MEDIA QUERIES ======= */
 
 /* Phones */

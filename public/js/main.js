@@ -9,16 +9,148 @@ const CATEGORY_CONTAINER = document.getElementById("categories-container")
 const SUBCATEGORY_TEMPLATE = document.getElementById("subcategory-template")
 const STORE_CONTAINER = document.getElementById("store-container")
 
-loadFrontPage()
-displayStore()
+/**
+ * Create a new store object which loads and holds data about categories,
+ * subcategories and products
+ * 
+ * @dimits-exe
+ */
+class Store {
+    #categories = {}
+    #subcategories = {}
+    #products = []
 
+    /**
+     * Returns a fully initialized store. Use this method instead of a constructor
+     * to guarantee the data is loaded before they are accessed by other methods.
+     * @returns a loaded store object
+     */
+    static async constructStore() {
+        let store = new Store()
+        await store.#initialize()
 
-function loadFrontPage() {
+        console.log(store.categories);
+        return store
+    }
+
+    /**
+     * Do NOT use the default constructor, use the async 
+     * constuctStore factory class method instead.
+     */
+    constructor() {
+        
+    }
+
+    get categories() { return structuredClone(this.#categories) }
+
+    get subcategories() { return structuredClone(this.#subcategories) }
+
+    get products() { return structuredClone(this.#products) }
+
+    /**
+    * Create a store object to hold information about the categories, subcategories
+    * and products.
+    */
+    async #initialize() {
+        try {
+            this.#categories = await this.#loadCategories()
+            await this.#loadSubcategories(this.#categories, this.#subcategories)
+            await this.#loadProducts(this.#categories, this.#products)
+        } catch (error) {
+            onError(error)
+        }
+    }
+
+    /**
+     * Get the subcategories of all categories.
+     * @param {obj} categories a list of objects describng all the categories
+     * @param {obj} subcategories an object to be filled by the subcategories
+     * @returns a promise resolving when the subcategories object is filled
+     */
+    #loadSubcategories(categories, subcategories) {
+        let promises = []
+
+        /**
+         * A curried function that adds a subCategory object to the index of its
+         * respective category.
+         * @param {obj} contents the subcategory object
+         */
+        function addSubCategory(contents) {
+            let id = contents[0].category_id
+            subcategories[id] = contents
+        }
+
+        for (let category of categories) {
+            promises.push(new Promise(resolve =>
+                resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
+                    + "/subcategories", { method: "GET" })
+                    .then(obj => obj.json())
+                    .then(subCategoryList => addSubCategory(subCategoryList))))
+            )
+        }
+
+        return Promise.all(promises)
+    }
+
+    /**
+     * Get an object containing all the products by category.
+     * @param {obj} categories all the categories
+     * @param {obj} subcategories an object to be filled by the products
+     * @returns a promise resolving when the product array is filled
+     */
+    #loadProducts(categories, products) {
+        let promises = []
+
+        /**
+         * A curried function that adds a poduct object to the index of its
+         * respective category.
+         * @param {obj} productList an array of product objects
+         */
+        function addProducts(productList) {
+            products.push(productList)
+        }
+
+        for (let category of categories) {
+            let addProductsToCategory = products => addProducts(products)
+
+            promises.push(new Promise(resolve =>
+                resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
+                    + "/products", { method: "GET" })
+                    .then(res => res.json())
+                    .then(productList => addProductsToCategory(productList))))
+            )
+        }
+
+        return Promise.all(promises)
+    }
+
+    /**
+     * Get the main product categories from the remote server.
+     * @returns a promise resolving into an object holding an array of all the categories
+     */
+    #loadCategories() {
+        return fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories", { method: "GET" })
+            .then(res => res.json())
+    }
+}
+
+function main() {
+    async function sex() {
+        let store = await Store.constructStore()
+        console.log(store.categories);
+
+        loadFrontPage(store)
+        displayCategory(store)
+    }
+
+    sex()
+}
+
+function loadFrontPage(store) {
     // if we are indeed on the front page
     // zafeiri xero oti einai apaisio pls min me skotoseis exo oikogeneia
     if (CATEGORY_CONTAINER !== null) {
-        let load = categories => displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: categories }, CATEGORY_CONTAINER)
-        getCategories().then(categories => load(categories), err => onError(err))
+        displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
     }
 }
 
@@ -34,49 +166,20 @@ function displayTemplate(template, obj, container) {
     console.log(compiledTemplate(obj));
 }
 
-/**
- * Get the main product categories from the remote server.
- * @returns a promise resolving into an object holding an array of all the categories
- */
-function getCategories() {
-    return fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories", { method: "GET" })
-        .then(res => res.json())
-}
-
-/**
- * Create a store object to hold information about the categories, subcategories
- * and products.
- */
-async function displayStore() {
-    let subcategories = {}
-    let products = []
-    let categories
-
-    try {
-        categories = await getCategories()
-        await getSubcategories(categories, subcategories)
-        await getProducts(categories, products)
-        displayCategory(categories, subcategories, products)
-    } catch (error) {
-        onError(error)
-    }
-
-}
-
 function urlGetCategory() {
     let url = document.URL.split("?")[1]
     let params = new URLSearchParams(url)
     return params.get("id") - 1 // index = id - 1 because the categories are placed sorted in an array
 }
 
-function displayCategory(categories, subcategories, products) {
+function displayCategory(store) {
     let categoryId = parseInt(urlGetCategory())
-    let category = categories[categoryId]
-    displaySubCategories(category, subcategories, products)
+    let category = store.categories[categoryId]
+    displaySubCategories(category, store.subcategories, store.products)
 }
 
 function displaySubCategories(category, subcategories, products, filter = undefined) {
-    let selectedSubcategories = subcategories[category.id]
+    let selectedSubcategories = subcategories[category.id + 1]
 
     // TODO: filter subcategories
     for (let subcategory of selectedSubcategories) {
@@ -95,68 +198,6 @@ function displaySubCategories(category, subcategories, products, filter = undefi
     }
 }
 
-/**
- * Get the subcategories of all categories.
- * @param {obj} categories a list of objects describng all the categories
- * @param {obj} subcategories an object to be filled by the subcategories
- * @returns a promise resolving when the subcategories object is filled
- */
-function getSubcategories(categories, subcategories) {
-    let promises = []
-
-    /**
-     * A curried function that adds a subCategory object to the index of its
-     * respective category.
-     * @param {obj} contents the subcategory object
-     */
-    function addSubCategory(contents) {
-        let id = contents[0].category_id
-        subcategories[id] = contents
-    }
-
-    for (let category of categories) {
-        promises.push(new Promise(resolve =>
-            resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
-                    + "/subcategories", { method: "GET" })
-                    .then(obj => obj.json())
-                    .then(subCategoryList => addSubCategory(subCategoryList))))
-        )
-    }
-
-    return Promise.all(promises)
-}
-
-/**
- * Get an object containing all the products by category.
- * @param {obj} categories all the categories
- * @param {obj} subcategories an object to be filled by the products
- * @returns a promise resolving when the product array is filled
- */
-function getProducts(categories, products) {
-    let promises = []
-
-    /**
-     * A curried function that adds a poduct object to the index of its
-     * respective category.
-     * @param {obj} productList an array of product objects
-     */
-    function addProducts(productList) {
-        products.push(productList)
-    }
-
-    for (let category of categories) {
-        let addProductsToCategory = products => addProducts(products)
-
-        promises.push(new Promise(resolve =>
-            resolve(fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories/" + category.id
-                + "/products", { method: "GET" })
-                .then(res => res.json())
-                .then(productList => addProductsToCategory(productList))))
-        )
-    }
-
-    return Promise.all(promises)
-}
 
 /**
  * Display an error message
@@ -165,3 +206,7 @@ function getProducts(categories, products) {
 function onError(errorMessage) {
     console.log(errorMessage);
 }
+
+
+let store = {}
+main()
