@@ -37,15 +37,58 @@ class Store {
      * Do NOT use the default constructor, use the async 
      * constuctStore factory class method instead.
      */
-    constructor() {
-        
-    }
+    constructor() {}
 
     get categories() { return structuredClone(this.#categories) }
 
     get subcategories() { return structuredClone(this.#subcategories) }
 
     get products() { return structuredClone(this.#products) }
+
+    loadFrontPage() {
+        // if we are indeed on the front page
+        // zafeiri xero oti einai apaisio pls min me skotoseis exo oikogeneia
+        if (CATEGORY_CONTAINER !== null) {
+            displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: this.#categories }, CATEGORY_CONTAINER)
+        }
+    }
+
+    /**
+    * Display the selected category based on the url of the category page.  
+    * @param {string} subset the id of the selected subcategory to be displayed or "all" to display all the subcategories
+    */
+    displayCategory(subset = "all") {
+        let categoryId = parseInt(urlGetCategory())
+        let category = this.#categories[categoryId]
+        this.#displaySubCategories(category, subset)
+    }
+
+    /**
+     * Display a subset or all of the subcategories 
+     * @param {obj} category the category to be displayed
+     * @param {string} subset the id of the selected subcategory to be displayed or "all" to display all the subcategories   
+     */
+    #displaySubCategories(category, subset = "all") {
+        let selectedSubcategories = this.#subcategories[category.id + 1]
+
+        // TODO: filter subcategories
+        for (let subcategory of selectedSubcategories) {
+            let selectedProducts = this.#products.filter(
+                product => product.subcategory_id === subcategory.id)
+
+            let subcategoryDisplay = {
+                name: subcategory.title,
+                products: selectedProducts
+            }
+
+            const container = document.createElement("div")
+            displayTemplate(SUBCATEGORY_TEMPLATE.textContent, subcategoryDisplay, container)
+            console.log(container.innerHTML);
+            STORE_CONTAINER.appendChild(container)
+        }
+    }
+
+
 
     /**
     * Create a store object to hold information about the categories, subcategories
@@ -56,6 +99,7 @@ class Store {
             this.#categories = await this.#loadCategories()
             await this.#loadSubcategories(this.#categories, this.#subcategories)
             await this.#loadProducts(this.#categories, this.#products)
+            this.#products = this.#products.flat()
         } catch (error) {
             onError(error)
         }
@@ -139,25 +183,19 @@ function main() {
         let store = await Store.constructStore()
         console.log(store.categories);
 
-        loadFrontPage(store)
-        displayCategory(store)
+        store.loadFrontPage()
+        store.displayCategory("all")
     }
 
     sex()
 }
 
-function loadFrontPage(store) {
-    // if we are indeed on the front page
-    // zafeiri xero oti einai apaisio pls min me skotoseis exo oikogeneia
-    if (CATEGORY_CONTAINER !== null) {
-        displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
-    }
-}
+
 
 /**
  * Display an object to the html page according to a handlebars template.
  * @param {string} template the handlebars template as text
- * @param {any} obj the object to be used in the template
+ * @param {obj} obj the object to be used in the template
  * @param {HTMLElement} container the html container of the template
  */
 function displayTemplate(template, obj, container) {
@@ -166,36 +204,14 @@ function displayTemplate(template, obj, container) {
     console.log(compiledTemplate(obj));
 }
 
+/**
+ * Query the URL to select the index of the selected category.
+ * @returns the index of the selected category
+ */
 function urlGetCategory() {
     let url = document.URL.split("?")[1]
     let params = new URLSearchParams(url)
     return params.get("id") - 1 // index = id - 1 because the categories are placed sorted in an array
-}
-
-function displayCategory(store) {
-    let categoryId = parseInt(urlGetCategory())
-    let category = store.categories[categoryId]
-    displaySubCategories(category, store.subcategories, store.products)
-}
-
-function displaySubCategories(category, subcategories, products, filter = undefined) {
-    let selectedSubcategories = subcategories[category.id + 1]
-
-    // TODO: filter subcategories
-    for (let subcategory of selectedSubcategories) {
-        let selectedProducts = products.flat().filter(
-            product => product.subcategory_id === subcategory.id)
-
-        let subcategoryDisplay = {
-            name: subcategory.title,
-            products: selectedProducts
-        }
-
-        const container = document.createElement("div")
-        displayTemplate(SUBCATEGORY_TEMPLATE.textContent, subcategoryDisplay, container)
-        console.log(container.innerHTML);
-        STORE_CONTAINER.appendChild(container)
-    }
 }
 
 
