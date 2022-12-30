@@ -33,15 +33,22 @@
         </article>
     </script>
 
-    <script id="subcategories-menu" type="text/x-handlebars-template">
+    <script id="subcategories-menu-template" type="text/x-handlebars-template">
         <fieldset>
-            <legend>I would like to browse:</legend>
+            <legend>Menu:</legend>
             {{#each subcategories}}
-                <input type="radio" id="data-category-{{id}}" name="categories" value="{{id}}"/>
-                <label for="data=category-{{id}}">{{title}}</label>
+                <div class="menu-option">
+                    <label for="data=category-{{id}}">{{title}}</label>
+                    <input type="radio" id="data-category-{{id}}" name="categories" value="{{id}}"/>
+                </div>
             {{/each}}
-            <input type="radio" id="data-category-all" name="categories" value="all"/>
-            <label for="data=category-all">{{title}}</label>
+
+            <div class="menu-option">
+                <label for="data=category-all">All products</label>
+                <input type="radio" id="data-category-all" name="categories" value="all" checked/>
+            </div>
+            
+            <button>Select</button>
         </fieldset>
     </script>
 

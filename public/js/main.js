@@ -8,6 +8,8 @@ const CATEGORY_CONTAINER = document.getElementById("categories-container")
 
 const SUBCATEGORY_TEMPLATE = document.getElementById("subcategory-template")
 const STORE_CONTAINER = document.getElementById("store-container")
+const MENU_CONTAINER = document.getElementById("subcategories-menu")
+const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 
 /**
  * Create a new store object which loads and holds data about categories,
@@ -29,7 +31,6 @@ class Store {
         let store = new Store()
         await store.#initialize()
 
-        console.log(store.categories);
         return store
     }
 
@@ -45,34 +46,63 @@ class Store {
 
     get products() { return structuredClone(this.#products) }
 
+    /**
+     * Load the main categories and display them to the front page.
+     */
     loadFrontPage() {
         // if we are indeed on the front page
-        // zafeiri xero oti einai apaisio pls min me skotoseis exo oikogeneia
+        // TODO: refactor
         if (CATEGORY_CONTAINER !== null) {
             displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: this.#categories }, CATEGORY_CONTAINER)
         }
     }
 
     /**
-    * Display the selected category based on the url of the category page.  
-    * @param {string} subset the id of the selected subcategory to be displayed or "all" to display all the subcategories
-    */
-    displayCategory(subset = "all") {
-        let categoryId = parseInt(urlGetCategory())
-        let category = this.#categories[categoryId]
-        this.#displaySubCategories(category, subset)
+     * (Re-)Initialize the store page based on the url of the category page.  
+     */
+    loadCategoryPage() {
+        let subcategories = this.#getSubcategoriesFromURL()
+
+        this.#buildCategoryMenu(subcategories)
+        this.displayCategory(subcategories)
+    }
+
+    /**
+     * Display the selected subcategories of the current category. Use loadCategoryPage to change
+     * the currently displayed category.
+     * @param {obj} subcategories 
+     */
+    displayCategory(subcategories) {
+        let subcategoryId = this.#getSelectedSubcategory()
+        this.#displaySubcategories(subcategories, subcategoryId)
+    }
+
+
+    /**
+     * Initialize the menu for the selected category.
+     */
+    #buildCategoryMenu(subcategories) {
+        displayTemplate(MENU_TEMPLATE.textContent, {subcategories: subcategories}, MENU_CONTAINER)
+    }
+
+    /**
+     * 
+     * @returns the id of the selected subcategory
+     */
+    #getSelectedSubcategory() {
+        //TODO: implement
+        return "all"
     }
 
     /**
      * Display a subset or all of the subcategories 
-     * @param {obj} category the category to be displayed
+     * @param {[obj]} subcategories the subcategories to be displayed
      * @param {string} subset the id of the selected subcategory to be displayed or "all" to display all the subcategories   
      */
-    #displaySubCategories(category, subset = "all") {
-        let selectedSubcategories = this.#subcategories[category.id + 1]
+    #displaySubcategories(subcategories, subset = "all") {
 
         // TODO: filter subcategories
-        for (let subcategory of selectedSubcategories) {
+        for (let subcategory of subcategories) {
             let selectedProducts = this.#products.filter(
                 product => product.subcategory_id === subcategory.id)
 
@@ -88,12 +118,10 @@ class Store {
         }
     }
 
-
-
     /**
-    * Create a store object to hold information about the categories, subcategories
-    * and products.
-    */
+     * Create a store object to hold information about the categories, subcategories
+     * and products.
+     */
     async #initialize() {
         try {
             this.#categories = await this.#loadCategories()
@@ -176,21 +204,32 @@ class Store {
         return fetch(CORS_PROXY_URL + "/" + SHOP_API_URL + "/categories", { method: "GET" })
             .then(res => res.json())
     }
+
+    /**
+     * Query the URL to select the subcategories of the selected category
+     * @returns the selected subcategories
+     */
+    #getSubcategoriesFromURL() {
+        let url = document.URL.split("?")[1]
+        let params = new URLSearchParams(url)
+        let categoryId = parseInt(params.get("id")) - 1
+
+        let category = this.#categories[categoryId]
+        let subcategories = this.#subcategories[category.id] // index = id - 1 because the categories are placed sorted in an array
+        return subcategories
+    }
 }
 
 function main() {
     async function sex() {
-        let store = await Store.constructStore()
-        console.log(store.categories);
+        store = await Store.constructStore()
 
         store.loadFrontPage()
-        store.displayCategory("all")
+        store.loadCategoryPage()
     }
 
     sex()
 }
-
-
 
 /**
  * Display an object to the html page according to a handlebars template.
@@ -201,17 +240,6 @@ function main() {
 function displayTemplate(template, obj, container) {
     let compiledTemplate = Handlebars.compile(template)
     container.innerHTML = compiledTemplate(obj)
-    console.log(compiledTemplate(obj));
-}
-
-/**
- * Query the URL to select the index of the selected category.
- * @returns the index of the selected category
- */
-function urlGetCategory() {
-    let url = document.URL.split("?")[1]
-    let params = new URLSearchParams(url)
-    return params.get("id") - 1 // index = id - 1 because the categories are placed sorted in an array
 }
 
 
@@ -222,7 +250,6 @@ function urlGetCategory() {
 function onError(errorMessage) {
     console.log(errorMessage);
 }
-
 
 let store = {}
 main()
