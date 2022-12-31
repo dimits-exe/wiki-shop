@@ -1,5 +1,819 @@
-/* Put your CSS stylesheets here */
+/* ======= HEADER ======= */
 
+/* Define common color schemes for header and footer */
+header,
+footer {
+    background-color: #006fbb;
+    color: white;
+}
+
+/* Set font for header and cut any element that overflows its box */
+header {
+    font-family: Helvetica, sans-serif;
+}
+
+/* Place image on the left of the header and prevent it from overflowing its container */
+#header-logo {
+    float: left;
+    overflow: hidden;
+    font-size: 0px;
+    /* Creates vertical space if not set to 0 */
+}
+
+/* Let the image occupy 100% of its container */
+#header-logo>img {
+    width: 100%;
+}
+
+/* Place sub-title directly below title on header */
+header h2 {
+    text-align: left;
+    margin-bottom: 0.5em;
+    margin-top: 0em;
+}
+
+/* Set distance between title and sub-title */
+header h1 {
+    margin-bottom: 0.3em;
+}
+
+/* ======= NAVIGATION ======= */
+
+/* Navbar container */
+#navbar {
+    position: sticky;
+    top: 1em;
+    overflow: visible;
+    background-color: #00258a;
+    font-family: Arial;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    clear: left;
+}
+
+#navbar>* {
+    flex-grow: 0;
+    width: 30%;
+}
+
+/* Links inside the dropdown */
+#navbar .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+/* Links inside the navbar */
+#navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+    float: left;
+    align-items: stretch;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+/* Add dropdown character indicator */
+.dropbtn::after {
+    content: "▼";
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+/* Add a different shade of blue to navbar links on hover */
+#navbar a:hover,
+.dropdown:hover .dropbtn {
+    background-color: #1042c9;
+    color: black;
+}
+
+/* Dropdown content (hidden by default) */
+#navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Add a grey background color to dropdown links on hover */
+#navbar .dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+#navbar .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* ======= BODY GENERAL ======= */
+
+/* Set document defaults */
+body {
+    font-size: 1.15em;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #e3e3e3;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Set title size as large and remove space above header */
 h1 {
-    color: blue;
+    font-size: 4em;
+    margin-top: 0;
+}
+
+/* 
+ * The subtitle is commonly used between text and category boxes
+ * so we will place them in the center
+ */
+h2 {
+    font-size: 2.5em;
+    text-align: center;
+    text-decoration: wavy;
+}
+
+/* This tag is used to enumerate through cartegories, so we underline it */
+h3 {
+    font-size: 1.4em;
+    text-decoration: underline;
+}
+
+h4 {
+    text-align: center;
+}
+
+/* Set font for all headers */
+h1,
+h2,
+h3,
+h4 {
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Underline in case there's no link (placeholder for future html page) */
+a {
+    text-decoration: underline;
+}
+
+/* Choose a different color than blue because of background and make  */
+a:hover {
+    color: blueviolet;
+    cursor: pointer;
+}
+
+/* Mark defintions with bold and italics */
+dfn {
+    font-weight: bold;
+}
+
+/* Change color while waiting for the text box to pop up */
+dfn:hover {
+    color: darkcyan;
+    text-decoration: underline;
+}
+
+/* Format the figure vertically and to the center */
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Make caption text unique */
+figcaption {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Basic border configuration for the technical details table */
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.1em solid black;
+}
+
+/* Make the tables striped */
+tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+/* Display address elements in a row */
+address {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* Mark valid input as green */
+input:valid {
+    border-color: green;
+}
+
+/* Mark invalid input as red */
+input:invalid {
+    border-color: red;
+}
+
+/* ======= FORMS ======= */
+
+/* Make the fieldset container visually distinct from other page elements */
+fieldset {
+    background-color: lightgray;
+    border-style: solid;
+    border-color: #00258a;
+    padding: 3%;
+    border-radius: 1.5em;
+    margin-bottom: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Vertically center fieldset children */
+fieldset>* {
+    display: block;
+    text-align: left;
+    align-self: center;
+}
+
+/* Keep all stand-alone text and summary-details in the center when expanded */
+fieldset summary,
+fieldset details,
+fieldset>p {
+    text-align: center;
+}
+
+/* Slightly shrink explanation text */
+fieldset>details>p{
+    font-size: 0.9rem;
+}
+
+/* Center fieldset headers */
+fieldset>h3 {
+    text-align: center;
+}
+
+/* Give vertical space between fieldsets */
+fieldset>label {
+    margin-top: 1.5em;
+}
+
+/* Enlarge fieldset title */
+fieldset>legend {
+    font-size: 150%;
+    font-weight: 400;
+}
+
+/* Make text area visually distinct */
+fieldset>textarea {
+    width: 100%;
+    height: 7rem;
+    padding: 2px 4px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 1.2rem;
+    resize: none;
+    text-align: left;
+}
+
+/* Increase the width of the input fields*/
+fieldset>input {
+    width: 50%;
+}
+
+/* Display the rating images horizontally */
+.satisfaction-rating {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* 
+* We will use radio buttons disguised as radio buttons.
+* Hide radio buttons adjacent to our images.
+*/
+.satisfaction-rating input[type=radio] {
+    display: none;
+}
+
+/* Show that images are in fact radio buttons when hovered upon */
+.satisfaction-rating img:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+/* Change the appearance of the selected image to be darker and larger */
+.satisfaction-rating input[type=radio]:checked+label>img {
+    opacity: 1;
+    filter: brightness(80%);
+    height: 10em;
+}
+
+/* Fit the images inside the buttons */
+.textbox .satisfaction-rating img {
+    vertical-align: middle;
+    width: 90%;
+    height: 8em;
+    aspect-ratio: 1;
+}
+
+/* Display the checkboxes/radioboxes inline with their legends */
+fieldset>.option * {
+    display: inline;
+    vertical-align: center;
+}
+
+/* Simplify questionnaire headers */
+#questionnaire>h3 {
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-top: 2em;
+}
+
+/* Center the text inputs in the questionaire instead of placing them on the left */
+#questionnaire>input[type="text"] {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Center buttions below the textarea */
+#button-group {
+    margin: 2em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* Customize button appearance */
+#button-group>button {
+    font-size: 200%;
+    border-radius: 1em;
+    border-color: #00258a;
+}
+
+/* Enlarge and change button color when hovered */
+#button-group button:hover {
+    background-color: grey;
+    font-size: 250%;
+}
+
+/* ======= FOOTER ======= */
+
+/* Display the footer elements as rows, aligned to the center of the screen */
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Give footer sections all the available width and space out footer elements */
+footer>* {
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+/* Make distinct from background */
+footer>a {
+    color: white;
+}
+
+/* Contain image inside logo container */
+#footer-logo>img {
+    width: 100%;
+}
+
+/* Spread out the address containers */
+#footer-address>span {
+    display: flex;
+    justify-content: space-between;
+    text-align: start;
+}
+
+/* Give some horizontal space between the image and the value for each container */
+#footer-address>span>* {
+    margin-right: 5%;
+}
+
+/* Set size for address icons */
+#footer-address img {
+    display: flex;
+    align-items: center;
+}
+
+/* Create a column with the details at the bottom of the footer */
+#footer-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2em;
+}
+
+/* Keep the icons used for the addresses small */
+.textbox address img,
+#footer address img {
+    width: 3em;
+    height: 3em;
+}
+
+/* ======= USER DEFINED CLASSES ======= */
+
+/* Display social media icons spread out horizontally */
+.social-media-bar {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* Set max social media icons size */
+.social-media-bar img {
+    max-width: 7em;
+    max-height: 7em;
+}
+
+.navigable-container {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+/* ======= MEDIA QUERIES ======= */
+
+/* Phones */
+@media screen and (min-width: 100px) {
+
+    /* Occupy all of the screen width */
+    #header-logo {
+        width: 100%;
+    }
+
+    /* 
+     * Display a list of categories or products in a single column.
+     *
+     * We keep the classes for a list of categories and categories
+     * themselves separate because we may need to display a single category
+     * (for example in a product's page).
+     */
+    .category-list {
+        display: block;
+        margin-bottom: 5em;
+    }
+
+    /* Cover container width, leaving some space for zooming */
+    .textbox img,
+    .category img {
+        width: 95%;
+    }
+
+    /* Slightly zoom in on the pictures when hovered */
+    .textbox img:hover,
+    .category img:hover {
+        transform: scale(1.1);
+        z-index: 1;
+    }
+
+    /* Set small social media and address icons size */
+    #footer-address img,
+    .social-media-bar img {
+        height: 3em;
+    }
+
+    /* Leave minimal side margins to conserve space */
+    .textbox {
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+
+    /* Occupy all of the screen width */
+    #footer-logo {
+        width: 100%;
+    }
+
+}
+
+/* Tablets */
+@media screen and (min-width: 820px) {
+
+    /* Occupy most of the screen width */
+    #header-logo,
+    #footer-logo {
+        width: 70%;
+    }
+
+    /* Display a list of categories or products in 2 columns */
+    .category-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Split container between text and image */
+    .textbox img,
+    .category img {
+        width: 50%;
+    }
+
+    /* 
+     * Leave minimal side margins to conserve space.
+     * Unlike categories, textboxes are supposed to be viewed
+     * atomically, not side-by-side.
+    */
+    .textbox {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+
+    /* Slightly zoom in on the pictures when hovered */
+    .textbox img:hover,
+    .category img:hover {
+        transform: scale(1.1);
+        z-index: 1;
+    }
+
+    /* Set max social media icons size */
+    .social-media-bar img {
+        width: 5%;
+        height: 5%;
+    }
+
+    /* 
+     * The about us page has only 2 elements so we override the default 3 column grid 
+     */
+    #about-us-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Enlarge the images on the about us page */
+    #about-us-list img {
+        width: 50%;
+    }
+
+    /* Give vertical space to the address bar */
+    #footer-address {
+        height: 10em;
+    }
+
+    /* Set constant size for address icons */
+    #footer-address img {
+        height: 3em;
+    }
+
+}
+
+/* Computers */
+@media screen and (min-width: 1664px) {
+
+    /* Occupy some of the screen width */
+    #header-logo,
+    #footer-logo {
+        width: 50%;
+    }
+
+    /* Display a list of categories or products in 3 columns */
+    .category-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    /* 
+     * The about us page has only 2 elements so we override the default 3 column grid 
+     */
+    #about-us-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Cover container width, leaving some space for zooming */
+    .category img {
+        width: 90%;
+        margin: 1rem;
+    }
+
+    /* 
+     * Images used by categories and textboxes that don't belong in a list 
+     * need to be much smaller because of the sheer size of their containers. 
+     */
+    .textbox img,
+    .category.single img {
+        width: 30%;
+        float: left;
+    }
+
+    /* Add margin above footer adress/telephone/email images */
+    #footer-address>span>* {
+        margin-top: 8%;
+    }
+
+    /* 
+     * Leave extensive margins so the user's focus is
+     * kept to the middle of the screen.
+     */
+    .textbox {
+        margin-right: 15%;
+        margin-left: 15%;
+    }
+
+    /* Decrease zoom because of the larger size used for images here */
+    .textbox img:hover,
+    .category img:hover {
+        transform: scale(1.03);
+        z-index: 1;
+    }
+
+    /* Slighty downscale the images on the about us page */
+    #about-us-list img {
+        width: 35%;
+    }
+
+    /* Set max social media icons size */
+    .social-media-bar img {
+        width: 5%;
+        height: 5%;
+    }
+
+    /* Give vertical space to the address bar */
+    #footer-address {
+        height: 10em;
+    }
+
+    /* Give most of the horizontal space to the address containers */
+    #footer-address>span {
+        height: 90%;
+    }
+
+    /* Slightly increase font size for larger screens */
+    footer p,
+    footer a {
+        font-size: 1.3em;
+    }
+
+    /* Set size for address icons */
+    #footer-address img {
+        height: 50%;
+    }
+
+    #sign-up {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1%;
+    }
+}
+
+/* ======= USER DEFINED BOXES ======= */
+
+/*  
+ * Define a textbox, an area where a specific piece of text is placed, 
+ * usually alongside a title and an image.
+ * Place the textbox in a differently colored container, with appropriate
+ * space around it and some shadow.
+ */
+.textbox {
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    background-color: white;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 1.5em;
+    border-radius: 1em;
+    box-shadow: 0em 0em 0.2em 0.4em rgba(0, 37, 138, 0.05);
+    overflow: hidden;
+    /* Crop images if they expand beyond their container */
+}
+
+/* Give a little vertical spacing between the textbox's text sections */
+.textbox>h3 {
+    margin-top: 2em;
+}
+
+/* Content */
+.textbox.review>p {
+    text-align: left;
+}
+
+/* Format usernames */
+.textbox.review>h4 {
+    margin: 0.5em;
+    font-size: 1.5em;
+    color:#00258a;
+    text-align: left;
+}
+
+/* Keep profile pic constant*/
+.textbox.review>img {
+    height: 5em;
+    width: 5em;
+}
+
+/* Enlarge rating score */
+.textbox.review>h5 {
+    margin: 0.7em;
+    font-size: 2em;
+}
+
+/* Give score a unique color */
+.textbox.review>h5>var {
+    color:#00258a;
+}
+
+/*
+ * The standard images acompanying text and category boxes.
+ * We don't want to explicitly set both width and height because
+ * we don't want to ruin its aspect ratio.
+ */
+.textbox img,
+.category img {
+    float: left;
+    /* Give space for when the picture zooms */
+    margin-right: 3.7%;
+    margin-left: 4%;
+    margin-bottom: 3.5%;
+    transition: transform .2s;
+}
+
+/*
+ * Define a text-intro, a paragraph that starts a distinct semantic area.
+ * We want the first letter of every text intro to be visually distinct.
+ */
+.text-intro::first-letter {
+    font-size: 1.4em;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/*
+ * A category is any item on a list of categories such as the product
+ * categories and the products themselves.
+ */
+.category {
+    display: block;
+    background-color: white;
+    border-style: outset;
+    border-width: 0.4em;
+    padding-left: 1%;
+    padding-bottom: 1.5%;
+    margin: 1em;
+    box-shadow: 0em 0em 0.2em 0.2em rgba(0, 37, 138, 0.05);
+    overflow: hidden;
+    /* Crop images if they expand beyond their container */
+}
+
+/* 
+ * The description of the category. 
+ * Slightly upscaled and with a different font to differentiate it 
+ * from other, general text in the document.
+ */
+.category p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1em
+}
+
+/* The h3 tag in a category denotes the title of that category. */
+.category h3 {
+    font-size: 1.6em;
+}
+
+/* 
+ * The h5 tag in a category denotes specific product information
+ * such as code, price etc.
+ * We want it to be of a large size and default style.
+ */
+.category h5 {
+    font-size: 1.5em;
+}
+
+/* 
+ * The var tag in a denotes a value for a key-value pair
+ * used in a h5 tag.
+ * A unique color is given to differentiate it from the h5 tag.
+ */
+.category var {
+    color: green;
 }

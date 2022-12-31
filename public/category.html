@@ -15,21 +15,47 @@
     <script src="js/main.js" type="text/javascript" defer></script>
     <link rel="stylesheet" href="css/style.css">
 
-    <script id="categories-template" type="text/x-handlebars-template">
+    <script id="subcategory-template" type="text/x-handlebars-template">
+        <h2>{{name}}</h2>
         <article class="category-list">
-            {{#each categories}} 
-                <article class="textbox">
-                    <h3>{{title}}</h3>
+            {{#each products}}
+                <article class="category">
+                    <h3>
+                        {{title}}
+                    </h3>
                     <a href="category.html?id={{id}}">
-                        <img alt={{title}} src={{img_url}}/>
+                        <img alt={{title}} src={{image}}/>
                     </a>
+                    <p>{{description}}</p>
+                    <var>{{cost}}$</var>
                 </article>
             {{/each}}
         </article>
     </script>
+
+    <script id="subcategories-menu-template" type="text/x-handlebars-template">
+        <fieldset>
+            <legend>Menu:</legend>
+            {{#each subcategories}}
+                <div class="menu-option">
+                    <label for="data=category-{{id}}">{{title}}</label>
+                    <input type="radio" id="data-category-{{id}}" name="categories" value="{{id}}"/>
+                </div>
+            {{/each}}
+
+            <div class="menu-option">
+                <label for="data=category-all">All products</label>
+                <input type="radio" id="data-category-all" name="categories" value="all" checked/>
+            </div>
+            
+            <button onclick="store.displayCategory()">Select</button>
+        </fieldset>
+    </script>
+
 </head>
 
 <body>
+
     <header>
         <a href="index.html" id="header-logo">
             <img alt="Faymetrics Logo" sizes="max-width:800px 624px, 854px" src="resources/logo.png"
@@ -67,8 +93,14 @@
             largest encyclopedia. Thank you for visiting our store and we hope you find something you love!
         </article>
 
-        <article id="categories-container">
-            <!-- Handlebars content goes here -->
+        <article class="navigable-container">
+            <article id="store-container">
+                <!-- Handlebars content goes here -->
+            </article>
+    
+            <nav id="subcategories-menu">
+                <!-- Handlebars content goes here-->
+            </nav>
         </article>
 
     </main>
