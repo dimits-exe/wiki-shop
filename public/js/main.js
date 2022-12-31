@@ -11,6 +11,8 @@ const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 
+let store = {}
+
 /**
  * Create a new store object which loads and holds data about categories,
  * subcategories and products
@@ -70,28 +72,29 @@ class Store {
     /**
      * Display the selected subcategories of the current category. Use loadCategoryPage to change
      * the currently displayed category.
-     * @param {obj} subcategories 
      */
-    displayCategory(subcategories) {
-        let subcategoryId = this.#getSelectedSubcategory()
-        this.#displaySubcategories(subcategories, subcategoryId)
+    displayCategory() {
+        let subcategories = this.#getSubcategoriesFromURL()
+        let selectedSubCat = this.#getSelectedSubcategory()
+        this.#displaySubcategories(subcategories, selectedSubCat)
     }
 
 
     /**
      * Initialize the menu for the selected category.
+     * @param {obj} subcategories the subcategories for the currently selected category 
      */
     #buildCategoryMenu(subcategories) {
         displayTemplate(MENU_TEMPLATE.textContent, {subcategories: subcategories}, MENU_CONTAINER)
     }
 
     /**
-     * 
+     * Get the id of the selected subcategory from the side menu.
      * @returns the id of the selected subcategory
      */
     #getSelectedSubcategory() {
-        //TODO: implement
-        return "all"
+        const selected = document.querySelector("input[name='categories']:checked")
+        return selected.value
     }
 
     /**
@@ -100,9 +103,17 @@ class Store {
      * @param {string} subset the id of the selected subcategory to be displayed or "all" to display all the subcategories   
      */
     #displaySubcategories(subcategories, subset = "all") {
+        let selectedSubcategories
 
-        // TODO: filter subcategories
-        for (let subcategory of subcategories) {
+        if(subset === "all") 
+            selectedSubcategories = subcategories
+        else 
+            selectedSubcategories = [subcategories[parseInt(subset) - 1]] // turn into array for uniform access
+        
+        // reset container contents
+        STORE_CONTAINER.innerHTML = ""
+
+        for (let subcategory of selectedSubcategories) {
             let selectedProducts = this.#products.filter(
                 product => product.subcategory_id === subcategory.id)
 
@@ -113,7 +124,6 @@ class Store {
 
             const container = document.createElement("div")
             displayTemplate(SUBCATEGORY_TEMPLATE.textContent, subcategoryDisplay, container)
-            console.log(container.innerHTML);
             STORE_CONTAINER.appendChild(container)
         }
     }
@@ -251,5 +261,5 @@ function onError(errorMessage) {
     console.log(errorMessage);
 }
 
-let store = {}
+
 main()
