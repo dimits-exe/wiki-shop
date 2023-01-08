@@ -43,22 +43,29 @@ if (loginButton !== null) {
 
 
 async function initializePage() {
-    store = await Store.constructStore(HOST_URL, CORS_PROXY_URL, SHOP_API_URL)
+    store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
 
-    displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
-    store.loadCategoryPage()
-
-    const subcategories = store.getSubcategoriesFromURL()
-
-    const subcategoryObjects = store.displayCategory(subcategories)
-    STORE_CONTAINER.innerHTML = ""
-    for (let object of subcategoryObjects) {
-        const container = document.createElement("div")
-        displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
-        STORE_CONTAINER.appendChild(container)
+    if (document.URL === HOST_URL + "/index.html") {
+        // display main page
+        displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
     }
 
-    displayTemplate(MENU_TEMPLATE.textContent, { subcategories: subcategories }, MENU_CONTAINER)
+
+    // display category page
+    if (document.URL.split("?")[0] === HOST_URL + "/categories.html") {
+        const subcategories = store.getSubcategoriesFromURL()
+
+        const subcategoryObjects = store.displayCategory(subcategories)
+        STORE_CONTAINER.innerHTML = ""
+        for (let object of subcategoryObjects) {
+            const container = document.createElement("div")
+            displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
+            STORE_CONTAINER.appendChild(container)
+        }
+
+        displayTemplate(MENU_TEMPLATE.textContent, { subcategories: subcategories }, MENU_CONTAINER)
+    }
+
 }
 
 // ============= LOGIN FUNCTIONS ===============
@@ -135,14 +142,6 @@ function displayTemplate(template, obj, container) {
     container.innerHTML = compiledTemplate(obj)
 }
 
-
-/**
- * Display an error message
- * @param {string} errorMessage the error message
- */
-function onError(errorMessage) {
-    console.log(errorMessage)
-}
 
 /**
  * Display a hidden HTML element.

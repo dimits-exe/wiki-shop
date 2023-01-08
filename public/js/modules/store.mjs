@@ -4,7 +4,6 @@
  * @dimits-exe
  */
 export class Store {
-    #hostURL
     #corsProxyURL
     #shopAPIURL
 
@@ -17,8 +16,8 @@ export class Store {
      * to guarantee the data is loaded before they are accessed by other methods.
      * @returns a loaded store object
      */
-    static async constructStore(HOST_URL, CORS_PROXY_URL, SHOP_API_URL) {
-        let store = new Store()
+    static async constructStore(CORS_PROXY_URL, SHOP_API_URL) {
+        let store = new Store(CORS_PROXY_URL, SHOP_API_URL)
         await store.#initialize()
 
         return store
@@ -28,8 +27,7 @@ export class Store {
      * Do NOT use the default constructor, use the async 
      * constuctStore factory class method instead.
      */
-    constructor(HOST_URL, CORS_PROXY_URL, SHOP_API_URL) { 
-        this.#hostURL = HOST_URL
+    constructor(CORS_PROXY_URL, SHOP_API_URL) { 
         this.#corsProxyURL = CORS_PROXY_URL
         this.#shopAPIURL = SHOP_API_URL
     }
@@ -115,7 +113,7 @@ export class Store {
             await this.#loadProducts(this.#categories, this.#products)
             this.#products = this.#products.flat()
         } catch (error) {
-            onError(error)
+            console.log(error);
         }
     }
 
