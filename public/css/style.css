@@ -817,3 +817,20 @@ footer>a {
 .category var {
     color: green;
 }
+
+/* Set fixed button size */
+.showPassword>button {
+    width: 3em;
+    height: 3em;
+}
+
+/* Match button size */
+.showPassword img {
+    width: 2.2em;
+    height: 2.2em;
+}
+
+/* By default hidden elements */
+.hidden {
+    display: none;
+}
