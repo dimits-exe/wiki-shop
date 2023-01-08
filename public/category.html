@@ -93,6 +93,59 @@
             largest encyclopedia. Thank you for visiting our store and we hope you find something you love!
         </article>
 
+        <article class="textbox">
+            <h2>
+                Login to your Faymetrics® account
+            </h2>
+
+            <p id="login-error-label" class="error-label"></p>
+
+            <form id="login-form">
+                <fieldset>
+                    <legend>
+                        Login
+                    </legend>
+
+                    <label for="login-username">
+                        Username:
+                    </label>
+                    <input autocomplete="username" id="login-username" name="username" pattern="^[a-zA-Z0-9._-]{8,}$"
+                        placeholder="aNormalUsername" required
+                        title="Any letter from a-z, can use underscores, points and dashes, at least 8 characters long"
+                        type="text" />
+
+                    <label for="signup-password">
+                        Password:
+                    </label>
+                    <input id="login-password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required
+                        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                        type="password" />
+                    <div class="showPassword">
+                        <button type="checkbox" id="login-show-pass" class="showPassword">
+                            <img src="resources/eye.png" alt="show password">
+                        </button>
+                        Show Password
+                    </div>
+
+
+                    <details>
+                        <summary>Forgot your password?⬇</summary>
+                        Faymetrics is not legally responsible for the loss of passwords and we are unwilling to assist
+                        with recovering or resetting them.
+                    </details>
+                </fieldset>
+
+                <button id="login-button" class="text-button" type="submit">
+                    Login
+                </button>
+            </form>
+
+            <div id="login-loading" class="hidden">
+                <img src="resources/spinner.gif" alt="loading">
+                <h3>Please wait...</h3>
+            </div>
+        </article>
+
         <article class="navigable-container">
             <article id="store-container">
                 <!-- Handlebars content goes here -->

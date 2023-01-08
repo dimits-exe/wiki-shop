@@ -1,7 +1,9 @@
 "use strict"
 
+const HOST_URL = "http://localhost:8080" 
 const CORS_PROXY_URL = "http://127.0.0.1:5000/"
 const SHOP_API_URL = "https://wiki-shop.onrender.com"
+const STORAGE_ID = "sessionId";
 
 const CATEGORY_TEMPLATE = document.getElementById("categories-template")
 const CATEGORY_CONTAINER = document.getElementById("categories-container")
@@ -11,11 +13,19 @@ const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 
-let store = {}
+const loginForm = document.getElementById("login-form")
+const loginNameField = document.getElementById("login-username")
+const loginPassField = document.getElementById("login-password")
+const loginErrorLabel = document.getElementById("login-error-label")
+const loginButton = document.getElementById("login-button")
+const loginShowPassButton = document.getElementById("login-show-pass")
+const spinner = document.getElementById("login-loading")
+
+let store = null
+
 
 /**
- * Create a new store object which loads and holds data about categories,
- * subcategories and products
+ * An object which loads and holds data about categories, subcategories and products
  * 
  * @dimits-exe
  */
@@ -41,6 +51,8 @@ class Store {
      * constuctStore factory class method instead.
      */
     constructor() {}
+
+    // getters mostly for debug
 
     get categories() { return structuredClone(this.#categories) }
 
@@ -230,16 +242,92 @@ class Store {
     }
 }
 
-function main() {
-    async function sex() {
-        store = await Store.constructStore()
+initializePage() 
 
-        store.loadFrontPage()
-        store.loadCategoryPage()
+if (loginButton !== null) {
+    loginShowPassButton.onclick = e => {
+        e.preventDefault() 
+        swapPasswordType(loginPassField) 
     }
 
-    sex()
+    loginButton.onclick = async e => {
+        showLabel(spinner) 
+        e.preventDefault() 
+        await login() 
+        hideLabel(spinner) 
+    }
 }
+
+
+async function initializePage() {
+    store = await Store.constructStore()
+
+    store.loadFrontPage()
+    store.loadCategoryPage()
+}
+
+// ============= LOGIN FUNCTIONS ===============
+
+/**
+ * Implements the login procedure for a user.
+ */
+async function login() {
+    if (checkValidity(loginForm.id)) {
+        let res = await loginRequest() 
+
+        if (!res.ok) {
+            let errorMsg = await res.text() 
+            showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg) 
+        } else {
+            let resObj = await res.json() 
+            console.log(resObj) 
+            saveSessionId(resObj) 
+
+            hideLabel(loginErrorLabel) 
+            window.location = "index.html" 
+        }
+
+    }
+}
+
+/**
+ * Send a request to the server to authenticate an existing user.
+ * @returns a promise that contains a sessionId or a error when resolved
+ */
+function loginRequest() {
+    const formData = {
+        username: loginNameField.value, password: loginPassField.value,
+    }
+
+    return fetch(HOST_URL + "/user/login", {
+        method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(formData)
+    }) 
+}
+
+/**
+ * Save the current session ID.
+ * @param {string} sessionId the newly acquired session ID
+ */
+function saveSessionId(sessionId) {
+    window.sessionStorage.setItem(STORAGE_ID, sessionId);
+}
+
+/**
+ * Get the last saved session ID.
+ * @returns the last session ID
+ */
+function getSessionId() {
+    return window.sessionStorage.getItem(STORAGE_ID);
+}
+
+/**
+ * Delete the last session ID.
+ */
+function resetSessionId() {
+    window.sessionStorage.removeItem(STORAGE_ID);
+}
+
+// ============= UI FUNCTIONS ===============
 
 /**
  * Display an object to the html page according to a handlebars template.
@@ -258,8 +346,36 @@ function displayTemplate(template, obj, container) {
  * @param {string} errorMessage the error message
  */
 function onError(errorMessage) {
-    console.log(errorMessage);
+    console.log(errorMessage) 
 }
 
+/**
+ * Display a hidden HTML element.
+ * @param {HTMLElement} label the HTML element to be displayed
+ * @param {string} message an optional message to be displayed in the element
+ */
+function showLabel(label, message = null) {
+    if (message !== null) label.innerText = message 
 
-main()
+    label.style.display = "block" 
+}
+
+/**
+ * Hide a visible HTML element.
+ * @param {HTMLElement} label the HTML element to be hidden
+ */
+function hideLabel(label) {
+    label.style.display = "none" 
+}
+
+function checkValidity(formId) {
+    let inputs = document.querySelectorAll(`#${formId} input`) 
+
+    for (let input of inputs) {
+        if (!input.checkValidity()) {
+            input.reportValidity() 
+            return false 
+        }
+    }
+    return true 
+}
