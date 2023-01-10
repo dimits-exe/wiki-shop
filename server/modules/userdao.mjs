@@ -1,11 +1,13 @@
-export class dao{
-    constructor(){
-        this.users=[];
-        this.products=[];
+export class userDao{
+
+    static async constructEmptyDao() {
+        let dao = new userDao([],[]);
+        await dao.#initialize();
+        return dao;
     }
 
-    addProduct(prod){
-        this.products.push(prod);
+    constructor(users){
+        this.users=users;
     }
 
     addUser(user){
@@ -28,5 +30,3 @@ export class dao{
         else{return False};
     }
 }
-
-module.exports = dao;

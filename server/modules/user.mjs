@@ -35,7 +35,4 @@ export class User{
         this.cart.push(item)
     }
 
-
 }
-
-module.exports = User;
