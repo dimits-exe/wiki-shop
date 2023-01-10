@@ -1,10 +1,13 @@
+//import { dao } from './modules/dao.mjs';
+//import { User } from './modules/user.mjs';
+//import { Product } from './modules/product.mjs';
 const { CallTracker } = require('assert');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path')
 const app = express()
 const port = 8080
-
+//const dao = new dao();
 const userts = {username: "TestUser", password: "Admin1234"};
 
 app.listen(port, () => console.log("listening at" + port.toString()));
