@@ -6,7 +6,7 @@ const path = require('path')
 const app = express()
 const port = 8080
 
-const userts = {username: "mevaranespitimou", password: "Dimitris69"};
+const userts = {username: "TestUser", password: "Admin1234"};
 
 app.listen(port, () => console.log("listening at" + port.toString()));
 
@@ -39,16 +39,14 @@ app.get('/', function(req, res){
     LS
 */
 app.post('/account/login', function(req, res){
-    let username = req.body.username;
-    let password = req.body.password;
+    const username = req.body.username;
+    const password = req.body.password;
     console.log('login request received from' + username.toString());
     if ((username === userts.username) && ( password === userts.password)){
-        console.log("sex")
-        let sessionId = uuidv4();
+        const sessionId = {sessionId: uuidv4()}
         res.send(sessionId);
     }
     else{
-        console.log("sex sex")
         res.send('user does not exist');
     }
 })
@@ -57,7 +55,10 @@ app.post('/account/login', function(req, res){
     CIS
 */
 app.post('/cart/buy', function(req, res){
-    
+    const username = req.body.username;
+    const password = req.body.password;
+    const product = req.body.product;
+    const sessionId = req.body.sessionId;
     res.send('you buy)')
 })
 
