@@ -22,5 +22,3 @@ export class Product{
     }
 
 }
-
-module.exports = Product;
