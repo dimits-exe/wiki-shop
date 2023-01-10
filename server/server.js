@@ -1,14 +1,15 @@
-//import { Dao } from './modules/dao.mjs';
-//import { User } from './modules/user.mjs';
-//import { Product } from './modules/product.mjs';
+const { User } = require('./modules/user.js')
+const { userDao } = require('./modules/userdao.js');
 const { CallTracker } = require('assert');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
-const path = require('path')
+const path = require('path');
 const app = express()
 const port = 8080
-//const dao = new Dao();
-const userts = {username: "TestUser", password: "Admin1234"};
+
+const userdao = new userDao([]);
+userts = new User("TestUser", "Admin1234");
+userdao.addUser(userts);
 
 app.listen(port, () => console.log("listening at" + port.toString()));
 
@@ -44,12 +45,18 @@ app.post('/account/login', function(req, res){
     const username = req.body.username;
     const password = req.body.password;
     console.log(`login request received from User ${username}`);
-    if ((username === userts.username) && ( password === userts.password)){
+    if (userdao.checkPassword(username, password)){
         const sessionId = {sessionId: uuidv4()}
-        res.send(sessionId);//TODO: CHANGE THIS ENTIRE IF STATEMENT ONCE DAOS ARE DONE
+        userdao.getUserByUsername(username).sessionId=sessionId.sessionId;
+        res.send(sessionId);
     }
     else{
-        res.status(404).send(`User ${username} not found`);
+        if(userdao.getUserByUsername(username)){
+            res.status(401).send(`Incorrect Password`);
+        }
+        else{
+            res.status(404).send(`User ${username} not found`);
+        }
     }
 })
 
@@ -58,11 +65,10 @@ app.post('/account/login', function(req, res){
 */
 app.post('/cart/buy', function(req, res){
     const username = req.body.username;
-    const password = req.body.password;
     const product = req.body.product;
     const sessionId = req.body.sessionId;
 
-    //get user from username/password
+    //get user from username
     //update user's cart
     //update products list
     //send success/error message to user
