@@ -864,6 +864,13 @@ fieldset>details:hover {
 
 /* Limit loading animation size */
 #login-loading>img {
-    width: 20%;
-    height: 20%;
+    width: 10%;
+    height: 10%;
+}
+
+/* Green === good */
+#success-label {
+    font-size: 2em;
+    color: green;
+    text-decoration: none;
 }

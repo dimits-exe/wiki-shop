@@ -16,7 +16,8 @@ const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 
-const loginContainer = document.getElementById("login-container")
+const loginSuccess =  document.getElementById("success-label")
+const loginUsernameLabel = document.getElementById("username-label")
 const loginForm = document.getElementById("login-form")
 const loginNameField = document.getElementById("login-username")
 const loginPassField = document.getElementById("login-password")
@@ -92,6 +93,7 @@ async function login() {
 
         if (!res.ok) {
             let errorMsg = await res.text()
+            hideLabel(loginSuccess)
             showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg)
         } else {
             let sessionId = await res.json()
@@ -99,7 +101,7 @@ async function login() {
             saveSessionId(sessionId)
 
             hideLabel(loginErrorLabel)
-            window.location.reload()
+            showLabel(loginSuccess, "Welcome " + loginNameField.value)
         }
 
     }
