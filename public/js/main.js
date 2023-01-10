@@ -93,7 +93,8 @@ function addPurchaseHandlers() {
 }
 
 function addToCart(productId) {
-    console.log(productId);
+    const product = store.getProductById(parseInt(productId));
+    console.log(product);
 }
 
 // ============= LOGIN FUNCTIONS ===============

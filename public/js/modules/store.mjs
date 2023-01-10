@@ -27,7 +27,7 @@ export class Store {
      * Do NOT use the default constructor, use the async 
      * constuctStore factory class method instead.
      */
-    constructor(CORS_PROXY_URL, SHOP_API_URL) { 
+    constructor(CORS_PROXY_URL, SHOP_API_URL) {
         this.#corsProxyURL = CORS_PROXY_URL
         this.#shopAPIURL = SHOP_API_URL
     }
@@ -37,6 +37,21 @@ export class Store {
     get subcategories() { return structuredClone(this.#subcategories) }
 
     get products() { return structuredClone(this.#products) }
+
+    /**
+     * Get a product object based on its id.
+     * @param {string | int} productId the product's id
+     * @returns the product object
+     * @throws {Error} if no product with such id exists 
+     */
+    getProductById(productId) {
+        const product = this.#products.find(obj => obj.id === productId)
+
+        if (product === undefined)
+            throw Error(`No product with id ${productId} exists`)
+        else
+            return product
+    }
 
 
     /**
@@ -95,7 +110,7 @@ export class Store {
                 products: selectedProducts
             }
 
-           subcategoryObjects.push(subcategoryObject);
+            subcategoryObjects.push(subcategoryObject);
         }
 
         return subcategoryObjects
