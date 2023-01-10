@@ -31,6 +31,10 @@ export class User {
             return this.#username === null
     }
 
+    set username(username) {
+        this.#username = username;
+    }
+
     get sessionId() {
         if (this.#sessionId === null)
             throw new Error("Session ID was never set")

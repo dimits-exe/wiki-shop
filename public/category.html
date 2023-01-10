@@ -54,7 +54,7 @@
                 <input type="radio" id="data-category-all" name="categories" value="all" checked/>
             </div>
             
-            <button id="select-subcategory-button">Select</button>
+            <button class="text-button" id="select-subcategory-button">Select</button>
         </fieldset>
     </script>
 
@@ -90,14 +90,6 @@
     <main>
         <h2>Welcome to the Wikipedia Store</h2>
         <h4>Sponsored by Faymetrics®</h4>
-
-        <article class="textbox">
-            <!--ChatGPT is a godsent-->
-            Welcome to Faymetrics! We are excited to offer a wide range of Wikipedia merchandise for all of your nerdy
-            needs. From t-shirts and hats to mugs and stickers, we have something for every Wikipedia fan. Our products
-            make great gifts for the knowledge-seekers in your life, or as a way to show off your love for the world's
-            largest encyclopedia. Thank you for visiting our store and we hope you find something you love!
-        </article>
 
         <article class="textbox">
             <h2>
@@ -157,10 +149,18 @@
             <article id="store-container">
                 <!-- Handlebars content goes here -->
             </article>
+            
+            <div id="sidebar">
+                <nav id="subcategories-menu">
+                    <!-- Handlebars content goes here-->
+                </nav>
 
-            <nav id="subcategories-menu">
-                <!-- Handlebars content goes here-->
-            </nav>
+                <fieldset>
+                    <legend>Cart</legend>
+                    <p><span id="cart-size-label">0</span> items in your cart </p>
+                    <button class="text-button" onclick="window.location = 'cart.html'">My Cart</button>
+                </fieldset>
+            </div>
         </article>
 
     </main>

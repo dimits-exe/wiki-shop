@@ -15,9 +15,9 @@ const SUBCATEGORY_TEMPLATE = document.getElementById("subcategory-template")
 const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
+const CART_SIZE_LABEL = document.getElementById("cart-size-label")
 
 const loginSuccess = document.getElementById("success-label")
-const loginUsernameLabel = document.getElementById("username-label")
 const loginForm = document.getElementById("login-form")
 const loginNameField = document.getElementById("login-username")
 const loginPassField = document.getElementById("login-password")
@@ -114,7 +114,7 @@ async function addToCart(productId) {
             const text = await res.text()
             onError(text)
         } else {
-            refreshCart()
+            refreshCartSize()
         }
     }
 }
@@ -137,8 +137,27 @@ function addToCartRequest(product) {
 /**
  * Refresh the cart displayed on the category page.
  */
-function refreshCart() {
-    console.log("refreshed"); // Needs refactoring
+async function refreshCartSize() {
+    const res = await cartSizeRequest()
+
+    if(res.ok) {
+        const sizeObj = await res.json()
+        CART_SIZE_LABEL.innerText = parseInt(sizeObj.size)
+    } else {
+        const text = res.text()
+        // silently ignore error
+        console.error(text)
+    }
+}
+
+function cartSizeRequest() {
+    const formData = {
+        username: user.username, sessionId: user.sessionId
+    }
+
+    return fetch(HOST_URL + "/cart/size/", {
+        method: "GET", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData)
+    })
 }
 
 // ============= LOGIN FUNCTIONS ===============

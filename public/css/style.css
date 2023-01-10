@@ -840,7 +840,7 @@ footer>a {
 
 /* Set size for text-only button */
 .text-button {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 /* Slightly shrink explanation text */
@@ -902,4 +902,10 @@ fieldset>details:hover {
 .error-label {
     color: red;
     font-weight: bold;
+}
+
+#cart-size-label {
+    color:#00258a;
+    font-style: italic;
+    font-weight: bolder;
 }
