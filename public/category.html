@@ -27,7 +27,13 @@
                         <img alt={{title}} src={{image}}/>
                     </a>
                     <p>{{description}}</p>
-                    <var>{{cost}}$</var>
+                    
+                    <div class="product-footer">
+                        <var>{{cost}}$</var>
+                        <button class="purchase-button">
+                            <img src="resources/cart.png" alt="Add to cart">
+                        </button>
+                    </div>
                 </article>
             {{/each}}
         </article>
@@ -138,7 +144,7 @@
                     Login
                 </button>
             </form>
-            
+
             <h3 id="success-label" class="hidden"></h3>
 
             <div id="login-loading" class="hidden">

@@ -877,3 +877,23 @@ fieldset>details:hover {
     color: green;
     text-decoration: none;
 }
+
+/* Combine price and purchase button at the bottom of the product box */
+.product-footer {
+    clear: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Fill button with image */
+.purchase-button>img {
+    width: 90%;
+    height: 90%;
+}
+
+/* Place button away from the price*/
+.purchase-button {
+    margin-left: 60%;
+    margin-right: 5%;
+}
