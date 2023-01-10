@@ -40,8 +40,7 @@ export class Store {
 
 
     /**
-     * Display the selected subcategories of the current category. Use loadCategoryPage to change
-     * the currently displayed category.
+     * Display the selected subcategories of the current category.
      */
     displayCategory(subcategories) {
         let selectedSubCat = this.#getSelectedSubcategory()

@@ -80,6 +80,20 @@ function displayCategory() {
         displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
         STORE_CONTAINER.appendChild(container)
     }
+
+    addPurchaseHandlers()
+}
+
+function addPurchaseHandlers() {
+    const buttons = document.getElementsByClassName("purchase-button")
+
+    for(let button of buttons) {
+        button.onclick = () => addToCart(button.dataset.productId);
+    }
+}
+
+function addToCart(productId) {
+    console.log(productId);
 }
 
 // ============= LOGIN FUNCTIONS ===============
