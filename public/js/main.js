@@ -27,6 +27,7 @@ const loginShowPassButton = document.getElementById("login-show-pass")
 const spinner = document.getElementById("login-loading")
 
 let store = null
+let username = null
 
 initializePage()
 
@@ -84,17 +85,56 @@ function displayCategory() {
     addPurchaseHandlers()
 }
 
+// ============= CART FUNCTIONS ===============
+
+/**
+ * Add handlers for the purchase buttons of each product.
+ */
 function addPurchaseHandlers() {
     const buttons = document.getElementsByClassName("purchase-button")
 
     for(let button of buttons) {
-        button.onclick = () => addToCart(button.dataset.productId);
+        button.onclick = async () => await addToCart(button.dataset.productId);
     }
 }
 
-function addToCart(productId) {
+/**
+ * Sends a request to the server to add a product to the user's cart.
+ * @param {string | int} productId product id
+ */
+async function addToCart(productId) {
     const product = store.getProductById(parseInt(productId));
-    console.log(product);
+    
+    const res = await addToCartRequest(product)
+
+    if(!res.ok) {
+        const text = await res.text()
+        alert(text)
+    } else {
+        refreshCart()
+    }
+}
+
+/**
+ * Construct a request that updates the user's cart with the provided product.
+ * @param {obj} product the product object
+ * @returns a promise which when resolved shows if the update request was successfull
+ */
+function addToCartRequest(product) {
+    const formData = {
+        username: username, sessionId: getSessionId(), product: product
+    }
+
+    return fetch(HOST_URL + "/cart/buy/", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData)
+    })
+}
+
+/**
+ * Refresh the cart displayed on the category page.
+ */
+function refreshCart() {
+    console.log("refreshed"); // Needs refactoring
 }
 
 // ============= LOGIN FUNCTIONS ===============
@@ -112,11 +152,13 @@ async function login() {
             showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg)
         } else {
             let sessionId = await res.json()
+            username = loginNameField.value 
+
             console.log(sessionId)
             saveSessionId(sessionId)
 
             hideLabel(loginErrorLabel)
-            showLabel(loginSuccess, "Welcome " + loginNameField.value)
+            showLabel(loginSuccess, "Welcome " + username)
         }
 
     }
