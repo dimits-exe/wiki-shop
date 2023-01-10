@@ -28,7 +28,7 @@ export class User {
         if (this.#username === null)
             throw new Error("Username was never set")
         else
-            return this.#username === null
+            return this.#username
     }
 
     set username(username) {
