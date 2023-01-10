@@ -204,7 +204,7 @@ figure {
 
 /* Make caption text unique */
 figcaption {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.9em;
     font-style: italic;
 }
@@ -268,7 +268,7 @@ fieldset>p {
 }
 
 /* Slightly shrink explanation text */
-fieldset>details>p{
+fieldset>details>p {
     font-size: 0.9rem;
 }
 
@@ -722,7 +722,7 @@ footer>a {
 .textbox.review>h4 {
     margin: 0.5em;
     font-size: 1.5em;
-    color:#00258a;
+    color: #00258a;
     text-align: left;
 }
 
@@ -740,7 +740,7 @@ footer>a {
 
 /* Give score a unique color */
 .textbox.review>h5>var {
-    color:#00258a;
+    color: #00258a;
 }
 
 /*
@@ -816,6 +816,9 @@ footer>a {
  */
 .category var {
     color: green;
+    font-size: 2em;
+    font-weight: bold;
+    font-family: system-ui;
 }
 
 /* Set fixed button size */
@@ -857,7 +860,7 @@ fieldset>details:hover {
 
 /* Place image and text vertically */
 #login-loading {
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
