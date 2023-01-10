@@ -1,6 +1,7 @@
 "use strict"
 
 import { Store } from "./modules/store.mjs"
+import { displayTemplate,  showLabel, hideLabel, checkValidity, swapPasswordType} from "./modules/ui.js"
 
 const HOST_URL = "http://localhost:8080"
 const CORS_PROXY_URL = "http://127.0.0.1:5000/"
@@ -127,60 +128,4 @@ function getSessionId() {
  */
 function resetSessionId() {
     window.sessionStorage.removeItem(STORAGE_ID);
-}
-
-// ============= UI FUNCTIONS ===============
-
-/**
- * Display an object to the html page according to a handlebars template.
- * @param {string} template the handlebars template as text
- * @param {obj} obj the object to be used in the template
- * @param {HTMLElement} container the html container of the template
- */
-function displayTemplate(template, obj, container) {
-    let compiledTemplate = Handlebars.compile(template)
-    container.innerHTML = compiledTemplate(obj)
-}
-
-
-/**
- * Display a hidden HTML element.
- * @param {HTMLElement} label the HTML element to be displayed
- * @param {string} message an optional message to be displayed in the element
- */
-function showLabel(label, message = null) {
-    if (message !== null) label.innerText = message
-
-    label.style.display = "block"
-}
-
-/**
- * Hide a visible HTML element.
- * @param {HTMLElement} label the HTML element to be hidden
- */
-function hideLabel(label) {
-    label.style.display = "none"
-}
-
-function checkValidity(formId) {
-    let inputs = document.querySelectorAll(`#${formId} input`)
-
-    for (let input of inputs) {
-        if (!input.checkValidity()) {
-            input.reportValidity()
-            return false
-        }
-    }
-    return true
-}
-
-/**
- * Switch a password field's text between hidden and visible.
- * @param {HTMLElement} passwordField the password field
- */
-function swapPasswordType(passwordField) {
-    if (passwordField.type === "password")
-        passwordField.type = "text";
-    else
-        passwordField.type = "password";
 }
