@@ -45,7 +45,7 @@ export class Store {
      */
     displayCategory(subcategories) {
         let selectedSubCat = this.#getSelectedSubcategory()
-        this.#displaySubcategories(subcategories, selectedSubCat)
+        return this.#displaySubcategories(subcategories, selectedSubCat)
     }
 
     /**
@@ -96,7 +96,7 @@ export class Store {
                 products: selectedProducts
             }
 
-           subcategoryObjects.append(subcategoryObject);
+           subcategoryObjects.push(subcategoryObject);
         }
 
         return subcategoryObjects

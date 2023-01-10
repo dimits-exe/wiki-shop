@@ -16,6 +16,7 @@ const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 
+const loginContainer = document.getElementById("login-container")
 const loginForm = document.getElementById("login-form")
 const loginNameField = document.getElementById("login-username")
 const loginPassField = document.getElementById("login-password")
@@ -53,9 +54,13 @@ async function initializePage() {
 
 
     // display category page
-    if (document.URL.split("?")[0] === HOST_URL + "/categories.html") {
+    if (document.URL.split("?")[0] === HOST_URL + "/category.html") {
         const subcategories = store.getSubcategoriesFromURL()
 
+        // build menu
+        displayTemplate(MENU_TEMPLATE.textContent, { subcategories: subcategories }, MENU_CONTAINER)
+
+        // build category
         const subcategoryObjects = store.displayCategory(subcategories)
         STORE_CONTAINER.innerHTML = ""
         for (let object of subcategoryObjects) {
@@ -64,7 +69,7 @@ async function initializePage() {
             STORE_CONTAINER.appendChild(container)
         }
 
-        displayTemplate(MENU_TEMPLATE.textContent, { subcategories: subcategories }, MENU_CONTAINER)
+    
     }
 
 }
@@ -82,12 +87,12 @@ async function login() {
             let errorMsg = await res.text()
             showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg)
         } else {
-            let resObj = await res.json()
-            console.log(resObj)
-            saveSessionId(resObj)
+            let sessionId = await res.json()
+            console.log(sessionId)
+            saveSessionId(sessionId)
 
             hideLabel(loginErrorLabel)
-            window.location = "index.html"
+            window.location.reload()
         }
 
     }

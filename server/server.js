@@ -1,6 +1,5 @@
 const { CallTracker } = require('assert');
 const express = require('express');
-const { logger } = require('handlebars');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path')
 const app = express()
