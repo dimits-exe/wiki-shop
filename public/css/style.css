@@ -897,3 +897,9 @@ fieldset>details:hover {
     margin-left: 60%;
     margin-right: 5%;
 }
+
+/* Make error label distinct */
+.error-label {
+    color: red;
+    font-weight: bold;
+}
