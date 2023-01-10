@@ -1,0 +1,6 @@
+LS: POST localhost/account/login {username: string, password: string} -> {sessionId: string}
+CIS: POST localhost/cart/buy {username: string, password: string, product: obj, sessionId:string} -> response code, text
+CSS: GET localhost/cart/size {username: string, sessionId: string} -> {size: int}
+CRS: GET localhost/cart/current {username: string, sessionId: string} -> {cartItems: Array<Product>, totalCost: int}
+
+class Product = {title: string, cost: int, quantity: int}
