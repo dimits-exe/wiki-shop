@@ -20,7 +20,7 @@ export function displayTemplate(template, obj, container) {
 export function showLabel(label, message = null) {
     if (message !== null) label.innerText = message
 
-    label.style.display = "block"
+    label.style.visibility = "visible"
 }
 
 /**
@@ -28,7 +28,7 @@ export function showLabel(label, message = null) {
  * @param {HTMLElement} label the HTML element to be hidden
  */
 export function hideLabel(label) {
-    label.style.display = "none"
+    label.style.visibility = "hidden"
 }
 
 export function checkValidity(formId) {

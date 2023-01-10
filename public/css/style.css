@@ -832,7 +832,7 @@ footer>a {
 
 /* By default hidden elements */
 .hidden {
-    display: none;
+    visibility: hidden;
 }
 
 /* Set size for text-only button */
