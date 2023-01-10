@@ -173,3 +173,14 @@ function checkValidity(formId) {
     }
     return true
 }
+
+/**
+ * Switch a password field's text between hidden and visible.
+ * @param {HTMLElement} passwordField the password field
+ */
+function swapPasswordType(passwordField) {
+    if (passwordField.type === "password")
+        passwordField.type = "text";
+    else
+        passwordField.type = "password";
+}
