@@ -101,7 +101,7 @@ function loginRequest() {
         username: loginNameField.value, password: loginPassField.value,
     }
 
-    return fetch(HOST_URL + "/user/login", {
+    return fetch(HOST_URL + "/account/login", {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData)
     })
 }
