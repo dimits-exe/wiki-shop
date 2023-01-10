@@ -59,19 +59,26 @@ async function initializePage() {
 
         // build menu
         displayTemplate(MENU_TEMPLATE.textContent, { subcategories: subcategories }, MENU_CONTAINER)
-
-        // build category
-        const subcategoryObjects = store.displayCategory(subcategories)
-        STORE_CONTAINER.innerHTML = ""
-        for (let object of subcategoryObjects) {
-            const container = document.createElement("div")
-            displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
-            STORE_CONTAINER.appendChild(container)
-        }
-
-    
+        const SELECT_SUBCATEGORY_BUTTON = document.getElementById("select-subcategory-button")
+        SELECT_SUBCATEGORY_BUTTON.onclick = () => displayCategory()
+        
+        // build page with all subcategories
+        displayCategory()
     }
 
+}
+
+function displayCategory() {
+    const subcategories = store.getSubcategoriesFromURL()
+
+    // build category
+    const subcategoryObjects = store.displayCategory(subcategories)
+    STORE_CONTAINER.innerHTML = ""
+    for (let object of subcategoryObjects) {
+        const container = document.createElement("div")
+        displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
+        STORE_CONTAINER.appendChild(container)
+    }
 }
 
 // ============= LOGIN FUNCTIONS ===============
