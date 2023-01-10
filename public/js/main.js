@@ -1,7 +1,7 @@
 "use strict"
 
 import { Store } from "./modules/store.mjs"
-import { displayTemplate,  showLabel, hideLabel, checkValidity, swapPasswordType} from "./modules/ui.js"
+import { displayTemplate,  showLabel, hideLabel, checkValidity, swapPasswordType} from "./modules/ui.mjs"
 
 const HOST_URL = "http://localhost:8080"
 const CORS_PROXY_URL = "http://127.0.0.1:5000/"
