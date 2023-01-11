@@ -29,7 +29,7 @@ exports.User = class {
 
     calculateTotalCost(){
         let totalcost=0;
-        for (i in this.cart){
+        for (let i in this.cart){
             let cost = this.cart[i].product.cost;
             totalcost = totalcost + cost*i.quantity;
         }
@@ -37,9 +37,7 @@ exports.User = class {
     }
 
     generateCart(){
-        let cost = this.calculateTotalCost();
-        let object = {cartItems: this.cart, totalCost: cost};
-        return object;
+        return {'cartItems': this.cart, 'totalCost': this.calculateTotalCost()};
     }
 
 }

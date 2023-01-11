@@ -129,5 +129,6 @@ app.get('/cart/current', function(req, res){
     }
     catch(error){
         res.status(400).send('Unknown Error while displaying cart');
+        console.log(error);
     }
 })
