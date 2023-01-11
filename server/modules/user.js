@@ -10,11 +10,10 @@ exports.User = class {
         let size=0;
         if (this.cart.length>0){
             for (let x in this.cart){
-                size = size + this.cart[x].quantity;
+                size += this.cart[x].quantity;
             }
         }
-        let sizeObj = {'size': size};
-        return sizeObj;
+        return {'size': size};
     }
 
 

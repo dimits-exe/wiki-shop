@@ -17,8 +17,8 @@ exports.userDao = class{
         }
     }
 
-    checkSessionID(sID, user){
-        return user.sessionId==sID;
+    checkSessionId(sId, user){
+        return user.sessionId==sId;
     }
 
     checkPassword(username, password){

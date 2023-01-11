@@ -8,18 +8,18 @@ const app = express()
 const port = 8080
 
 const userdao = new userDao([]);
-userts = new User("TestUser", "Admin1234");
-userdao.addUser(userts);
+testuser = new User("TestUser", "Admin1234");
+userdao.addUser(testuser);
 
 /*item1 = {product: {title: 'sex', id: '132'}, quantity: 1};
 item2 = {product: {title: 'sex2', id: '11'}, quantity: 1};
-userts.addToCart(item1);
-userts.addToCart(item1);
-console.log(userts)
-userts.addToCart(item1);
-console.log(userts)*///FOR DEBUGGING PURPOSES
+testuser.addToCart(item1);
+testuser.addToCart(item1);
+console.log(testuser)
+testuser.addToCart(item1);
+console.log(testuser)*///FOR DEBUGGING PURPOSES
 
-app.listen(port, () => console.log("listening at" + port.toString()));
+app.listen(port, () => console.log(`listening at ${port}`));
 
 /* 
     Serve static content from directory "public",
@@ -50,7 +50,8 @@ app.get('/', function(req, res){
     LS
 */
 app.post('/account/login', function(req, res){
-    const username = req.body.username;
+    try{
+        const username = req.body.username;
     const password = req.body.password;
     console.log(`login request received from User ${username}`);
     if (userdao.checkPassword(username, password)){
@@ -67,6 +68,10 @@ app.post('/account/login', function(req, res){
             res.status(404).send(`User ${username} not found`);
         }
     }
+    }
+    catch (error){
+        res.status(400).send(`Unknown Error while logging in`);
+    }
 })
 
 /*
@@ -79,18 +84,16 @@ app.post('/cart/buy', function(req, res){
     const sessionId = req.body.sessionId;
     const user = userdao.getUserByUsername(username);
     try{
-        if(userdao.checkSessionID(sessionId, user)){
+        if(userdao.checkSessionId(sessionId, user)){
             user.addToCart(item);
             console.log(user);
-            console.log(user.getCartSize());
             res.status(200).send(`User ${username} has bought item ${item.product.title}`);
         }
         else{
-            res.status(401).send(`user and sessionID do not match`)
+            res.status(401).send(`user and sessionId do not match`)
         }
     }
     catch(error){
-        console.log(user);
         res.status(400).send('Unknown Error while buying item')
     }
 })
@@ -101,18 +104,15 @@ app.post('/cart/buy', function(req, res){
 app.get('/cart/size/', function(req, res){
     try{
         const username = req.query.username;
-        const sessionId = req.query.sessionID;
+        const sessionId = req.query.sessionId;
         const user = userdao.getUserByUsername(username);
-        if(userdao.checkSessionID(sessionId, user)){
+        if(userdao.checkSessionId(sessionId, user)){
             res.status(200).send(user.getCartSize());
         }
     }
     catch(error){
         res.status(400).send('Unknown Error while showing cart size');
     }
-    //get url search parameters
-    //search username in users list
-    //return cart size of said user (getCartSize) or return a 404 error
 })
 
 /*
@@ -121,16 +121,13 @@ app.get('/cart/size/', function(req, res){
 app.get('/cart/current', function(req, res){
     try{
         const username = req.query.username;
-        const sessionId = req.query.sessionID;
+        const sessionId = req.query.sessionId;
         const user = userdao.getUserByUsername(username);
-        if(userdao.checkSessionID(sessionId, user)){
+        if(userdao.checkSessionId(sessionId, user)){
             res.status(200).send(user.generateCart());
         }
     }
     catch(error){
         res.status(400).send('Unknown Error while displaying cart');
     }
-    //get url search parameters
-    //search username in users list
-    //return cart
 })
