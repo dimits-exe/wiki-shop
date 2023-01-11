@@ -12,10 +12,10 @@
     <link rel="icon" type="image/x-icon" href="resources/logo_small.ico">
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="js/main.js" type="module" defer></script>
+    <script src="js/cart.js" type="module" defer></script>
     <link rel="stylesheet" href="css/style.css">
 
-    <script id="categories-template" type="text/x-handlebars-template">
+    <script id="cart-template" type="text/x-handlebars-template">
         <table>
             <tr>
                 <th>Title</th>
@@ -31,6 +31,7 @@
                 </tr>
             {{/each}}
         </table>
+        <h3>Total Cost: <var>{{totalCost}}</var></h3>
     </script>
 </head>
 
@@ -53,7 +54,7 @@
     <main>
         <h2>Cart.</h2>
 
-        <article id="cart-table">
+        <article id="cart-table-container">
             <!-- Handlebars content goes here -->
         </article>
         <button id="checkout-button">Place your order</button>

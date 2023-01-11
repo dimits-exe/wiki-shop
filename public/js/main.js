@@ -155,8 +155,6 @@ function cartSizeRequest() {
     requestURL.set("username", user.username)
     requestURL.set("sessionId", user.sessionId)
 
-    console.log(requestURL)
-
     return fetch(requestURL, {
         method: "GET", headers: { "Content-Type": "application/json" }
     })
