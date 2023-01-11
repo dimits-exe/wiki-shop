@@ -1,5 +1,9 @@
+import { hideLabel, showLabel } from "./modules/ui.mjs"
+
 const CART_TEMPLATE = document.getElementById("cart-template")
 const CART_CONTAINER = document.getElementById("cart-table-container")
+const CART_ERROR_CONTAINER = document.getElementById("cart-error-container")
+const CART_ERROR_MESSAGE = document.getElementById("cart-error-message")
 
 await initializePage()
 
@@ -21,7 +25,9 @@ async function initializePage() {
  * @param {string} errorMessage the message to be displayed to the user
  */
 function displayError(errorMessage) {
-    console.error(errorMessage);
+    CART_ERROR_MESSAGE.innerText = errorMessage
+    hideLabel(CART_CONTAINER)
+    showLabel(CART_ERROR_CONTAINER, errorMessage)
 }
 
 /**
@@ -45,6 +51,9 @@ function displayCart(cart) {
     const compiledTemplate = Handlebars.compile(CART_TEMPLATE.textContent)
     const html = compiledTemplate(cart)
     CART_CONTAINER.innerHTML = html
+
+    hideLabel(CART_ERROR_CONTAINER)
+    showLabel(CART_CONTAINER)
 }
 
 /**
