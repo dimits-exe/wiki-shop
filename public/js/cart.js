@@ -54,11 +54,10 @@ function displayCart(cart) {
  * @returns a promise that returns the user's cart if resolved successfully
  */
 function getCartRequest(username, sessionId) {
-    const requestURL = new URLSearchParams("/cart/current/")
-    requestURL.set("username", username)
-    requestURL.set("sessionId", sessionId)
+    const params = {username: username, sessionId: sessionId}
+    const searchParams = new URLSearchParams(params)
 
-    return fetch(requestURL, {
+    return fetch("/cart/current?" + searchParams, {
         method: "GET", headers: { "Content-Type": "application/json" }
     })
 }

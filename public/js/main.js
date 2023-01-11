@@ -151,11 +151,10 @@ async function refreshCartSize() {
 }
 
 function cartSizeRequest() {
-    const requestURL = new URLSearchParams("/cart/size/")
-    requestURL.set("username", user.username)
-    requestURL.set("sessionId", user.sessionId)
+    const params = {username: user.username, sessionId: user.sessionId}
+    const searchParams = new URLSearchParams(params)
 
-    return fetch(requestURL, {
+    return fetch("/cart/size?" + searchParams, {
         method: "GET", headers: { "Content-Type": "application/json" }
     })
 }
