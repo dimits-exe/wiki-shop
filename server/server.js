@@ -110,6 +110,9 @@ app.get('/cart/size/', function(req, res){
         if(userdao.checkSessionId(sessionId, user)){
             res.status(200).send(user.getCartSize());
         }
+        else{
+            res.status(401).send(`user and sessionId do not match`)
+        }
     }
     catch(error){
         res.status(400).send('Unknown Error while showing cart size');
@@ -127,6 +130,9 @@ app.get('/cart/current', function(req, res){
         if(userdao.checkSessionId(sessionId, user)){
             res.status(200).send(user.generateCart());
             console.log(user.generateCart());
+        }
+        else{
+            res.status(401).send(`user and sessionId do not match`)
         }
     }
     catch(error){
