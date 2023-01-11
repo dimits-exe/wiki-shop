@@ -7,7 +7,13 @@ exports.User = class {
     }
 
     getCartSize(){
-        const sizeObj = {'size': this.cart.length};
+        let size=0;
+        if (this.cart.length>0){
+            for (let x in this.cart){
+                size=+this.cart[x].quantity;
+            }
+        }
+        let sizeObj = {'size': size};
         return sizeObj;
     }
 
@@ -32,9 +38,9 @@ exports.User = class {
     }
 
     generateCart(){
-        cost = this.calculateTotalCost();
-        Object = {cartItems: this.cart, totalCost: cost};
-        return Object;
+        let cost = this.calculateTotalCost();
+        let object = {cartItems: this.cart, totalCost: cost};
+        return object;
     }
 
 }

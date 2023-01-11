@@ -82,6 +82,7 @@ app.post('/cart/buy', function(req, res){
         if(userdao.checkSessionID(sessionId, user)){
             user.addToCart(item);
             console.log(user);
+            console.log(user.getCartSize());
             res.status(200).send(`User ${username} has bought item ${item.product.title}`);
         }
         else{
