@@ -11,8 +11,8 @@ const userdao = new userDao([]);
 userts = new User("TestUser", "Admin1234");
 userdao.addUser(userts);
 
-/*item1 = {'product': {title: 'sex', id: '132'}, quantity: 1};
-item2 = {'product': {title: 'sex2', id: '11'}, quantity: 1};
+/*item1 = {product: {title: 'sex', id: '132'}, quantity: 1};
+item2 = {product: {title: 'sex2', id: '11'}, quantity: 1};
 userts.addToCart(item1);
 userts.addToCart(item1);
 console.log(userts)
@@ -75,14 +75,14 @@ app.post('/account/login', function(req, res){
 app.post('/cart/buy', function(req, res){
     const username = req.body.username;
     const product = req.body.product;
-    const item = {'product': product, quantity: 1}
+    const item = {product: product, quantity: 1}
     const sessionId = req.body.sessionId;
     const user = userdao.getUserByUsername(username);
     try{
         if(userdao.checkSessionID(sessionId, user)){
             user.addToCart(item);
             console.log(user);
-            res.status(200).send(`User ${username} has bought item ${item.title}`);
+            res.status(200).send(`User ${username} has bought item ${item.product.title}`);
         }
         else{
             res.status(401).send(`user and sessionID do not match`)
@@ -90,7 +90,7 @@ app.post('/cart/buy', function(req, res){
     }
     catch(error){
         console.log(user);
-        res.status(400).send('Item not buy(')
+        res.status(400).send('Unknown Error while buying item')
     }
 })
 
@@ -103,12 +103,11 @@ app.get('/cart/size/', function(req, res){
         const sessionId = req.query.sessionID;
         const user = userdao.getUserByUsername(username);
         if(userdao.checkSessionID(sessionId, user)){
-            console.log(user.cart);
             res.status(200).send(user.getCartSize());
         }
     }
     catch(error){
-        res.status(400).send('Oopsie Woopsie, we made a fucky wucky >w<');
+        res.status(400).send('Unknown Error while showing cart size');
     }
     //get url search parameters
     //search username in users list
@@ -124,13 +123,13 @@ app.get('/cart/current', function(req, res){
         const sessionId = req.query.sessionID;
         const user = userdao.getUserByUsername(username);
         if(userdao.checkSessionID(sessionId, user)){
-            console.log(user.cart);
-            res.status(200).send(user.cart);
+            res.status(200).send(user.generateCart());
         }
     }
     catch(error){
-        res.status(400).send('Oopsie Woopsie, we made a fucky wucky >w<');
+        res.status(400).send('Unknown Error while displaying cart');
     }
+    //get url search parameters
     //search username in users list
     //return cart
 })

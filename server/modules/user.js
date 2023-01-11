@@ -1,5 +1,3 @@
-const e = require("express");
-
 exports.User = class {
     constructor(username, password){
         this.username=username;
@@ -31,6 +29,12 @@ exports.User = class {
             totalcost = totalcost + cost*i.quantity;
         }
         return totalcost;
+    }
+
+    generateCart(){
+        cost = this.calculateTotalCost();
+        Object = {cartItems: this.cart, totalCost: cost};
+        return Object;
     }
 
 }
