@@ -21,7 +21,7 @@ export class User {
      * @returns true if the user has logged in
      */
     isLoggedIn() {
-        this.#username !== null
+        return this.#username !== null
     }
 
     get username() {
