@@ -1,4 +1,36 @@
 // ============= UI FUNCTIONS ===============
+/**
+ * A wrapper class that hides and displays HTML elements by setting display to none
+ * /reinstating their original display attribute . 
+ * @dimits-exe
+ */
+export class HideableWrapper {
+    #element
+    #originalDisplay
+
+    /**
+     * Wraps an element into an object that can hide and reinstate its previous display settings.
+     * @param {HTMLElement} element the element to be wrapped
+     */
+    constructor(element) {
+        this.#element = element
+        this.#originalDisplay = element.style.display
+    }
+
+    /**
+     * Hides the element.
+     */
+    hide() {
+        this.#element.style.display = "none"
+    }
+
+    /**
+     * Displays the element with its original display attribute.
+     */
+    show() {
+        this.#element.style.display = this.#originalDisplay
+    }
+}
 
 /**
  * Display an object to the html page according to a handlebars template.

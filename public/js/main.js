@@ -2,7 +2,7 @@
 
 import { Store } from "./modules/store.mjs"
 import { User } from "./modules/user.mjs"
-import { displayTemplate, showLabel, hideLabel, checkValidity, swapPasswordType } from "./modules/ui.mjs"
+import { HideableWrapper, displayTemplate, showLabel, hideLabel, checkValidity, swapPasswordType } from "./modules/ui.mjs"
 
 const HOST_URL = "http://localhost:8080"
 const CORS_PROXY_URL = "http://127.0.0.1:5000/"
@@ -25,7 +25,8 @@ const loginPassField = document.getElementById("login-password")
 const loginErrorLabel = document.getElementById("login-error-label")
 const loginButton = document.getElementById("login-button")
 const loginShowPassButton = document.getElementById("login-show-pass")
-const spinner = document.getElementById("login-loading")
+
+const SPINNER = new HideableWrapper(document.getElementById("loading-spinner"))
 
 let store = null
 let user = new User()
@@ -39,6 +40,7 @@ async function initializePage() {
         store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
         // display main page
         displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
+        SPINNER.hide()
     }
 
     // display category page
@@ -49,16 +51,17 @@ async function initializePage() {
         }
     
         loginButton.onclick = async e => {
-            showLabel(spinner)
+            SPINNER.show()
             e.preventDefault()
             await login()
-            hideLabel(spinner)
+            SPINNER.hide()
         }
 
         CHECKOUT_BUTTON.onclick = e => {e.preventDefault(); goToCart();}
-        CHECKOUT_BUTTON.disabled = true // enabled when logged in
+        CHECKOUT_BUTTON.disabled = true // becomes enabled when logged in
 
         store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
+        SPINNER.hide()
         const subcategories = store.getSubcategoriesFromURL()
 
         // build menu

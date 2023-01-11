@@ -1,9 +1,10 @@
-import { hideLabel, showLabel } from "./modules/ui.mjs"
+import { HideableWrapper, hideLabel, showLabel } from "./modules/ui.mjs"
 
 const CART_TEMPLATE = document.getElementById("cart-template")
 const CART_CONTAINER = document.getElementById("cart-table-container")
 const CART_ERROR_CONTAINER = document.getElementById("cart-error-container")
 const CART_ERROR_MESSAGE = document.getElementById("cart-error-message")
+const SPINNER = new HideableWrapper(document.getElementById("loading-spinner"))
 
 await initializePage()
 
@@ -18,6 +19,7 @@ async function initializePage() {
         const text = await res.text()
         displayError(text)
     }
+    SPINNER.hide()
 }
 
 /**

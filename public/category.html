@@ -94,8 +94,6 @@
                 Login to your Faymetrics® account
             </h2>
 
-            <p id="login-error-label" class="error-label"></p>
-
             <form id="login-form">
                 <fieldset>
                     <legend>
@@ -136,12 +134,13 @@
             </form>
 
             <h3 id="success-label" class="hidden"></h3>
-
-            <div id="login-loading" class="hidden">
-                <img src="resources/spinner.gif" alt="loading">
-                <h3>Please wait...</h3>
-            </div>
+            <h3 id="login-error-label" class="error-label"></h3>
         </article>
+
+        <div id="loading-spinner">
+            <img src="resources/spinner.gif" alt="loading">
+            <h3>Please wait...</h3>
+        </div>
 
         <article class="navigable-container">
             <article id="store-container">
