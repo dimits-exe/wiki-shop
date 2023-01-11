@@ -45,9 +45,19 @@
             <a href="index.html" tabindex="1">
                 Home
             </a>
-            <a href="cart.html" tabindex="2">
-                My cart <img src="resources/cart.png" alt="cart">
-            </a>
+            <div class="dropdown" tabindex="2">
+                <button class="dropbtn">
+                    My Account
+                </button>
+                <div class="dropdown-content">
+                    <a>
+                        Log In
+                    </a>
+                    <a>
+                        Sign Up
+                    </a>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -58,8 +68,9 @@
             <h3>Unfortunately we were unable to retrieve your cart. Reason:</h3>
             <p id="cart-error-message" class="error-label"></p>
 
-            <p> You can try <a href="javascript:location.reload();">refreshing</a> or going back to the 
-                <a href="index.html">homepage</a></p>
+            <p> You can try <a href="javascript:location.reload();">refreshing</a> or going back to the
+                <a href="index.html">homepage</a>
+            </p>
         </article>
 
         <article id="cart-table-container">

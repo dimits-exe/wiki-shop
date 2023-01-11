@@ -16,6 +16,7 @@ const STORE_CONTAINER = document.getElementById("store-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 const CART_SIZE_LABEL = document.getElementById("cart-size-label")
+const CHECKOUT_BUTTON = document.getElementById("checkout-button")
 
 const loginSuccess = document.getElementById("success-label")
 const loginForm = document.getElementById("login-form")
@@ -31,32 +32,33 @@ let user = new User()
 
 initializePage()
 
-if (loginButton !== null) {
-    loginShowPassButton.onclick = e => {
-        e.preventDefault()
-        swapPasswordType(loginPassField)
-    }
-
-    loginButton.onclick = async e => {
-        showLabel(spinner)
-        e.preventDefault()
-        await login()
-        hideLabel(spinner)
-    }
-}
-
-
 async function initializePage() {
-    store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
-
+    // load the rest of the UI before waiting for store to get loaded 
+    
     if (document.URL === HOST_URL + "/index.html") {
+        store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
         // display main page
         displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
     }
 
-
     // display category page
     if (document.URL.split("?")[0] === HOST_URL + "/category.html") {
+        loginShowPassButton.onclick = e => {
+            e.preventDefault()
+            swapPasswordType(loginPassField)
+        }
+    
+        loginButton.onclick = async e => {
+            showLabel(spinner)
+            e.preventDefault()
+            await login()
+            hideLabel(spinner)
+        }
+
+        CHECKOUT_BUTTON.onclick = e => {e.preventDefault(); goToCart();}
+        CHECKOUT_BUTTON.disabled = true // enabled when logged in
+
+        store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
         const subcategories = store.getSubcategoriesFromURL()
 
         // build menu
@@ -169,10 +171,15 @@ async function login() {
         let res = await loginRequest()
 
         if (!res.ok) {
+            CHECKOUT_BUTTON.disabled = true
+
             let errorMsg = await res.text()
             hideLabel(loginSuccess)
             showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg)
+            
         } else {
+            CHECKOUT_BUTTON.disabled = false
+
             let sessionId = await res.json()
             user.username = loginNameField.value
 
@@ -198,6 +205,16 @@ function loginRequest() {
     return fetch(HOST_URL + "/account/login", {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData)
     })
+}
+
+/**
+ * Send the user to the cart page with his login details encoded in the URL.
+ */
+function goToCart() {
+    const params = {username: user.username, sessionId: user.sessionId}
+    const searchParams = new URLSearchParams(params)
+
+    window.location = `${HOST_URL}/cart.html?${searchParams}`
 }
 
 function onError(errorMessage) {
