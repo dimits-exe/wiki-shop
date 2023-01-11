@@ -58,6 +58,7 @@ app.post('/account/login', function(req, res){
         const user = userdao.getUserByUsername(username);
         const sessionId = {'sessionId': uuidv4()};
         user.sessionId=sessionId.sessionId;
+        user.emptyCart();
         res.send(sessionId);
     }
     else{
@@ -82,7 +83,7 @@ app.post('/cart/buy', function(req, res){
     const product = req.body.product;
     const item = {product: product, quantity: 1}
     const sessionId = req.body.sessionId;
-    const user = userdao.getUserByUsername(username);
+    const user = userdao.getUserBySessionId(sessionId);
     try{
         if(userdao.checkSessionId(sessionId, user)){
             user.addToCart(item);

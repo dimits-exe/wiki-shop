@@ -9,6 +9,14 @@ exports.userDao = class{
         this.users.push(user);
     }
 
+    getUserBySessionId(sessionId){
+        for (let x in this.users){
+            if (this.users[x].sessionId==sessionId){
+                return this.users[x];
+            }
+        }
+    }
+
     getUserByUsername(username){
         for (let x in this.users){
             if (this.users[x].username==username){

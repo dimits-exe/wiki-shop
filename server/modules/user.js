@@ -16,6 +16,9 @@ exports.User = class {
         return {'size': size};
     }
 
+    emptyCart(){
+        this.cart=[];
+    }
 
     addToCart(item){
         const index = this.cart.findIndex(object => object.product.id === item.product.id);
