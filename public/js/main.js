@@ -94,7 +94,7 @@ function addPurchaseHandlers() {
     const buttons = document.getElementsByClassName("purchase-button")
 
     for (let button of buttons) {
-        button.onclick = async () => await addToCart(button.dataset.productId);
+        button.onclick = async () => await addToCart(button.dataset.productId)
     }
 }
 
@@ -151,12 +151,14 @@ async function refreshCartSize() {
 }
 
 function cartSizeRequest() {
-    const formData = {
-        username: user.username, sessionId: user.sessionId
-    }
+    const requestURL = new URLSearchParams("/cart/size/")
+    requestURL.set("username", user.username)
+    requestURL.set("sessionId", user.sessionId)
 
-    return fetch(HOST_URL + "/cart/size/", {
-        method: "GET", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData)
+    console.log(requestURL)
+
+    return fetch(requestURL, {
+        method: "GET", headers: { "Content-Type": "application/json" }
     })
 }
 
@@ -178,7 +180,7 @@ async function login() {
             user.username = loginNameField.value
 
             console.log(sessionId)
-            user.sessionId = sessionId
+            user.sessionId = sessionId.sessionId
 
             hideLabel(loginErrorLabel)
             showLabel(loginSuccess, "Welcome " + user.username)
