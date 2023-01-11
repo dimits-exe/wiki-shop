@@ -32,9 +32,9 @@ exports.User = class {
     }
 
     generateCart(){
-        cost = this.calculateTotalCost();
-        Object = {cartItems: this.cart, totalCost: cost};
-        return Object;
+        let cost = this.calculateTotalCost();
+        let object = {cartItems: this.cart, totalCost: cost};
+        return object;
     }
 
 }
