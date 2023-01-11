@@ -29,10 +29,7 @@ exports.User = class {
 
     calculateTotalCost(){
         let totalcost=0;
-        for (let i in this.cart){
-            let cost = this.cart[i].product.cost;
-            totalcost = totalcost + cost*i.quantity;
-        }
+        this.cart.forEach(item => totalcost+=(item.product.cost*item.quantity));
         return totalcost;
     }
 

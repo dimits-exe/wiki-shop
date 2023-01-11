@@ -125,10 +125,10 @@ app.get('/cart/current', function(req, res){
         const user = userdao.getUserByUsername(username);
         if(userdao.checkSessionId(sessionId, user)){
             res.status(200).send(user.generateCart());
+            console.log(user.generateCart());
         }
     }
     catch(error){
         res.status(400).send('Unknown Error while displaying cart');
-        console.log(error);
     }
 })
