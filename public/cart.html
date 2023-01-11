@@ -23,15 +23,15 @@
                 <th>Quantity</th>
             </tr>
             
-            {{#each products}}
+            {{#each cartItems}}
                 <tr>
-                    <td>{{title}}</td>
-                    <td>{{cost}}</td>
+                    <td>{{product.title}}</td>
+                    <td>{{product.cost}}</td>
                     <td>{{quantity}}</td>
                 </tr>
             {{/each}}
         </table>
-        <h3>Total Cost: <var>{{totalCost}}</var></h3>
+        <h3>Total Cost: <var>{{totalCost}}</var>$</h3>
     </script>
 </head>
 
@@ -62,26 +62,40 @@
     </header>
 
     <main>
-        <h2>Cart.</h2>
+        
 
         <div id="loading-spinner">
             <img src="resources/spinner.gif" alt="loading">
             <h3>Please wait...</h3>
         </div>
 
-        <article id="cart-error-container" class="hidden">
-            <h3>Unfortunately we were unable to retrieve your cart. Reason:</h3>
-            <p id="cart-error-message" class="error-label"></p>
-
-            <p> You can try <a href="javascript:location.reload();">refreshing</a> or going back to the
-                <a href="index.html">homepage</a>
-            </p>
+        <article class="textbox">
+            <h2>My Cart</h2>
+            <article id="cart-error-container" class="hidden">
+                <h3>Unfortunately we were unable to retrieve your cart. Reason:</h3>
+                <p id="cart-error-message" class="error-label"></p>
+    
+                <p> You can try <a href="javascript:location.reload();">refreshing</a> or going back to the
+                    <a href="index.html">homepage</a>
+                </p>
+            </article>
+    
+            <article id="cart-table-container">
+                <!-- Handlebars content goes here -->
+            </article>
+            <button id="buy-button" class="text-button">Place your order</button>
         </article>
 
-        <article id="cart-table-container">
-            <!-- Handlebars content goes here -->
+        <article id="success-container" class="textbox">
+            <h3 class="success-label">Your order has been placed!</h3>
+            <details>
+                <summary>Legal disclaimer</summary>
+                Faymetrics Inc. is not legally responsible for the loss or failed delivery of your products.
+                In the case of either, Faymetrics Inc. is unable and unwilling to assist you with the recovery of
+                your products and/or money.
+            </details>
+
         </article>
-        <button id="checkout-button">Place your order</button>
     </main>
 
 

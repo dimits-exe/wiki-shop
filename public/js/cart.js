@@ -4,11 +4,16 @@ const CART_TEMPLATE = document.getElementById("cart-template")
 const CART_CONTAINER = document.getElementById("cart-table-container")
 const CART_ERROR_CONTAINER = document.getElementById("cart-error-container")
 const CART_ERROR_MESSAGE = document.getElementById("cart-error-message")
+const BUY_BUTTON = document.getElementById("buy-button")
 const SPINNER = new HideableWrapper(document.getElementById("loading-spinner"))
+const SUCCESS_CONTAINER = new HideableWrapper(document.getElementById("success-container"))
 
 await initializePage()
 
 async function initializePage() {
+    SUCCESS_CONTAINER.hide()
+    BUY_BUTTON.onclick = e => {e.preventDefault(); buy()}
+
     const userDetails = getUserDetails()
 
     const res = await getCartRequest(userDetails.username, userDetails.sessionId)
@@ -71,4 +76,11 @@ function getCartRequest(username, sessionId) {
     return fetch("/cart/current?" + searchParams, {
         method: "GET", headers: { "Content-Type": "application/json" }
     })
+}
+
+/**
+ * Dummy function that would implement the purchase procedure.
+ */
+function buy() {
+    SUCCESS_CONTAINER.show()
 }

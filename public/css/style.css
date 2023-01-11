@@ -221,11 +221,22 @@ table {
     width: 100%;
     border-collapse: collapse;
     border: 0.1em solid black;
+    font-size: 1.2rem;
 }
 
 /* Make the tables striped */
 tr:nth-child(even) {
     background-color: lightgray;
+}
+
+td {
+    text-align: center;
+}
+
+th {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    background-color: white;
 }
 
 /* Display address elements in a row */
@@ -878,7 +889,7 @@ fieldset>details:hover {
 }
 
 /* Green === good */
-#success-label {
+.success-label {
     font-size: 2em;
     color: green;
     text-decoration: none;
@@ -911,7 +922,7 @@ fieldset>details:hover {
 }
 
 #cart-size-label {
-    color:#00258a;
+    color: #00258a;
     font-style: italic;
     font-weight: bolder;
 }

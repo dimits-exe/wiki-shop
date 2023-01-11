@@ -18,7 +18,7 @@ const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 const CART_SIZE_LABEL = document.getElementById("cart-size-label")
 const CHECKOUT_BUTTON = document.getElementById("checkout-button")
 
-const loginSuccess = document.getElementById("success-label")
+const loginSuccess = document.getElementById("login-success-label")
 const loginForm = document.getElementById("login-form")
 const loginNameField = document.getElementById("login-username")
 const loginPassField = document.getElementById("login-password")
