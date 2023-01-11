@@ -1,3 +1,5 @@
+const e = require("express");
+
 exports.User = class {
     constructor(username, password){
         this.username=username;
@@ -7,28 +9,25 @@ exports.User = class {
     }
 
     getCartSize(){
-        const sizeObj = {"size": this.cart.length};
+        const sizeObj = {'size': this.cart.length};
         return sizeObj;
     }
 
+
     addToCart(item){
-        productTitle=item.title;
-        var element={};
-        element.product=item;
-        element.quantity=1;
-        let lett = this.cart.find(x => x.product.id==item.id);
-        if (lett===undefined){
-            this.cart.push(element);
+        const index = this.cart.findIndex(object => object.product.id === item.product.id);
+        if(index === -1){
+            this.cart.push(item);
         }
         else{
-            lett.product.quantity++;
+            this.cart[index].quantity++;
         }
     }
 
     calculateTotalCost(){
         let totalcost=0;
         for (i in this.cart){
-            let cost = i.product.cost;
+            let cost = this.cart[i].product.cost;
             totalcost = totalcost + cost*i.quantity;
         }
         return totalcost;

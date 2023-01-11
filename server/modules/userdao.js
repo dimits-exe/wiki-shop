@@ -10,11 +10,15 @@ exports.userDao = class{
     }
 
     getUserByUsername(username){
-        for (let user of this.users){
-            if (user.username==username){
-                return user;
+        for (let x in this.users){
+            if (this.users[x].username==username){
+                return this.users[x];
             }
         }
+    }
+
+    checkSessionID(sID, user){
+        return user.sessionId==sID;
     }
 
     checkPassword(username, password){
