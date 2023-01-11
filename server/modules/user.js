@@ -7,7 +7,13 @@ exports.User = class {
     }
 
     getCartSize(){
-        const sizeObj = {'size': this.cart.length};
+        let size=0;
+        if (this.cart.length>0){
+            for (let x in this.cart){
+                size=+this.cart[x].quantity;
+            }
+        }
+        let sizeObj = {'size': size};
         return sizeObj;
     }
 
