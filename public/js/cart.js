@@ -1,17 +1,22 @@
-import { HideableWrapper, hideLabel, showLabel } from "./modules/ui.mjs"
+import { HideableWrapper } from "./modules/ui.mjs"
 
 const CART_TEMPLATE = document.getElementById("cart-template")
-const CART_CONTAINER = document.getElementById("cart-table-container")
-const CART_ERROR_CONTAINER = document.getElementById("cart-error-container")
 const CART_ERROR_MESSAGE = document.getElementById("cart-error-message")
 const BUY_BUTTON = document.getElementById("buy-button")
+const CART_TABLE_CONTAINER = document.getElementById("cart-table-container")
+
 const SPINNER = new HideableWrapper(document.getElementById("loading-spinner"))
-const SUCCESS_CONTAINER = new HideableWrapper(document.getElementById("success-container"))
+
+const BUY_SUCCESS_WRAPPER = new HideableWrapper(document.getElementById("success-container"), true)
+const CART_FULL_WRAPPER = new HideableWrapper(document.getElementById("full-cart-container"), true)
+const CART_EMPTY_WRAPPER = new HideableWrapper(document.getElementById("empty-cart-container"), true)
+const CART_ERROR_WRAPPER = new HideableWrapper(document.getElementById("cart-error-container"), true)
+
+const CART_CONTAINER_WRAPPER = new HideableWrapper(document.getElementById("cart-container"), true)
 
 await initializePage()
 
 async function initializePage() {
-    SUCCESS_CONTAINER.hide()
     BUY_BUTTON.onclick = e => {e.preventDefault(); buy()}
 
     const userDetails = getUserDetails()
@@ -25,6 +30,7 @@ async function initializePage() {
         displayError(text)
     }
     SPINNER.hide()
+    CART_CONTAINER_WRAPPER.show()
 }
 
 /**
@@ -33,8 +39,9 @@ async function initializePage() {
  */
 function displayError(errorMessage) {
     CART_ERROR_MESSAGE.innerText = errorMessage
-    hideLabel(CART_CONTAINER)
-    showLabel(CART_ERROR_CONTAINER, errorMessage)
+    CART_EMPTY_WRAPPER.hide()
+    CART_FULL_WRAPPER.hide()
+    CART_ERROR_WRAPPER.show()
 }
 
 /**
@@ -55,12 +62,33 @@ function getUserDetails() {
  * @param {obj} cart an object holding an array of products and their total cost
  */
 function displayCart(cart) {
+    if(cart.cartItems.length === 0)
+        displayEmptyCart()
+    else 
+        displayFullCart(cart)
+}
+
+/**
+ * Display a non-empty cart.
+ * @param {obj} cart an object holding an array of products and their total cost
+ */
+function displayFullCart(cart) {
     const compiledTemplate = Handlebars.compile(CART_TEMPLATE.textContent)
     const html = compiledTemplate(cart)
-    CART_CONTAINER.innerHTML = html
+    CART_TABLE_CONTAINER.innerHTML = html
 
-    hideLabel(CART_ERROR_CONTAINER)
-    showLabel(CART_CONTAINER)
+    CART_EMPTY_WRAPPER.hide()
+    CART_ERROR_WRAPPER.hide()
+    CART_FULL_WRAPPER.show()
+}
+
+/**
+ * Display a message telling the user their cart is empty.
+ */
+function displayEmptyCart() {
+    CART_EMPTY_WRAPPER.show()
+    CART_ERROR_WRAPPER.hide()
+    CART_FULL_WRAPPER.hide()
 }
 
 /**
@@ -82,5 +110,5 @@ function getCartRequest(username, sessionId) {
  * Dummy function that would implement the purchase procedure.
  */
 function buy() {
-    SUCCESS_CONTAINER.show()
+    BUY_SUCCESS_WRAPPER.show()
 }

@@ -62,28 +62,36 @@
     </header>
 
     <main>
-        
 
         <div id="loading-spinner">
             <img src="resources/spinner.gif" alt="loading">
             <h3>Please wait...</h3>
         </div>
 
-        <article class="textbox">
+        <article id="cart-container" class="textbox">
             <h2>My Cart</h2>
-            <article id="cart-error-container" class="hidden">
+
+            <article id="cart-error-container">
                 <h3>Unfortunately we were unable to retrieve your cart. Reason:</h3>
                 <p id="cart-error-message" class="error-label"></p>
-    
+
                 <p> You can try <a href="javascript:location.reload();">refreshing</a> or going back to the
                     <a href="index.html">homepage</a>
                 </p>
             </article>
-    
-            <article id="cart-table-container">
-                <!-- Handlebars content goes here -->
+
+            <article id="empty-cart-container">
+                <h3>Your cart is empty!</h3>
+                <a href="index.html">Start browsing here</a>
             </article>
-            <button id="buy-button" class="text-button">Place your order</button>
+
+            <div id="full-cart-container">
+                <article id="cart-table-container">
+                    <!-- Handlebars content goes here -->
+                </article>
+                <button id="buy-button" class="text-button">Place your order</button>
+            </div>
+
         </article>
 
         <article id="success-container" class="textbox">

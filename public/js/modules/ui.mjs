@@ -11,11 +11,16 @@ export class HideableWrapper {
     /**
      * Wraps an element into an object that can hide and reinstate its previous display settings.
      * @param {HTMLElement} element the element to be wrapped
+     * @param {boolean} hidden if the element shouldn't be originally displayed
      */
-    constructor(element) {
+    constructor(element, hidden = false) {
         this.#element = element
         this.#originalDisplay = element.style.display
+
+        if(hidden) this.hide()
     }
+
+    get element() {return this.#element }
 
     /**
      * Hides the element.

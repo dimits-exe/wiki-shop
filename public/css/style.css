@@ -201,6 +201,11 @@ dfn:hover {
     text-decoration: underline;
 }
 
+var {
+    color: green;
+    font-family: system-ui;
+}
+
 /* Format the figure vertically and to the center */
 figure {
     display: flex;
@@ -832,10 +837,8 @@ footer>a {
  * A unique color is given to differentiate it from the h5 tag.
  */
 .category var {
-    color: green;
     font-size: 2em;
     font-weight: bold;
-    font-family: system-ui;
 }
 
 /* Set fixed button size */
