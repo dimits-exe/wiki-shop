@@ -891,6 +891,13 @@ fieldset>details:hover {
     height: 10%;
 }
 
+/* Make loading message distinct */
+#loading-spinner>h3 {
+    text-decoration: none;
+    font-style: italic;
+    font-family: monospace;
+}
+
 /* Green === good */
 .success-label {
     font-size: 2em;
