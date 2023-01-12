@@ -12,7 +12,7 @@ const CATEGORY_TEMPLATE = document.getElementById("categories-template")
 const CATEGORY_CONTAINER = document.getElementById("categories-container")
 
 const SUBCATEGORY_TEMPLATE = document.getElementById("subcategory-template")
-const STORE_CONTAINER = document.getElementById("store-container")
+const PRODUCTS_CONTAINER = document.getElementById("products-container")
 const MENU_CONTAINER = document.getElementById("subcategories-menu")
 const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 const CART_SIZE_LABEL = document.getElementById("cart-size-label")
@@ -45,6 +45,8 @@ async function initializePage() {
 
     // display category page
     if (document.URL.split("?")[0] === HOST_URL + "/category.html") {
+        const STORE_WRAPPER = new HideableWrapper(document.getElementById("store-container"), true)
+        
         loginShowPassButton.onclick = e => {
             e.preventDefault()
             swapPasswordType(loginPassField)
@@ -62,6 +64,8 @@ async function initializePage() {
 
         store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
         SPINNER.hide()
+        STORE_WRAPPER.show()
+        
         const subcategories = store.getSubcategoriesFromURL()
 
         // build menu
@@ -80,11 +84,11 @@ function displayCategory() {
 
     // build category
     const subcategoryObjects = store.displayCategory(subcategories)
-    STORE_CONTAINER.innerHTML = ""
+    PRODUCTS_CONTAINER.innerHTML = ""
     for (let object of subcategoryObjects) {
         const container = document.createElement("div")
         displayTemplate(SUBCATEGORY_TEMPLATE.textContent, object, container)
-        STORE_CONTAINER.appendChild(container)
+        PRODUCTS_CONTAINER.appendChild(container)
     }
 
     addPurchaseHandlers()
