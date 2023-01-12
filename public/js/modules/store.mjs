@@ -95,8 +95,12 @@ export class Store {
 
         if (subset === "all")
             selectedSubcategories = subcategories
-        else
-            selectedSubcategories = [subcategories[parseInt(subset) - 1]] // turn into array for uniform access
+        else{
+            const id = parseInt(subset)
+            const cond = subcat => subcat.id === id
+            selectedSubcategories = [subcategories.flat().find(cond)] // turn into array for uniform access
+        }
+           
 
         // reset container contents
         const subcategoryObjects = []
