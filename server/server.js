@@ -52,23 +52,23 @@ app.get('/', function(req, res){
 app.post('/account/login', function(req, res){
     try{
         const username = req.body.username;
-    const password = req.body.password;
-    console.log(`login request received from User ${username}`);
-    if (userdao.checkPassword(username, password)){
-        const user = userdao.getUserByUsername(username);
-        const sessionId = {'sessionId': uuidv4()};
-        user.sessionId=sessionId.sessionId;
-        user.emptyCart();
-        res.send(sessionId);
-    }
-    else{
-        if(user){
-            res.status(401).send(`Incorrect Password`);
+        const password = req.body.password;
+        console.log(`login request received from User ${username}`);
+        if (userdao.checkPassword(username, password)){
+            const user = userdao.getUserByUsername(username);
+            const sessionId = {'sessionId': uuidv4()};
+            user.sessionId=sessionId.sessionId;
+            user.emptyCart();
+            res.send(sessionId);
         }
         else{
-            res.status(404).send(`User ${username} not found`);
+            if(userdao.getUserByUsername(username)){
+                res.status(401).send(`Incorrect Password`);
+            }
+            else{
+                res.status(404).send(`User ${username} not found`);
+            }
         }
-    }
     }
     catch (error){
         res.status(400).send(`Unknown Error while logging in`);
@@ -126,13 +126,18 @@ app.get('/cart/current', function(req, res){
     try{
         const username = req.query.username;
         const sessionId = req.query.sessionId;
-        const user = userdao.getUserByUsername(username);
-        if(userdao.checkSessionId(sessionId, user)){
-            res.status(200).send(user.generateCart());
-            console.log(user.generateCart());
+        if(userdao.getUserByUsername(username)){
+            const user = userdao.getUserByUsername(username);
+            if(userdao.checkSessionId(sessionId, user)){
+                res.status(200).send(user.generateCart());
+                console.log(user.generateCart());
+            }
+            else{
+                res.status(401).send(`User and SessionId do not match`);
+            }
         }
         else{
-            res.status(401).send(`user and sessionId do not match`)
+            res.status(404).send(`User ${username} not found`);
         }
     }
     catch(error){
