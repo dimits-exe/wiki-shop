@@ -34,6 +34,8 @@ app.use(express.urlencoded({ extended: false }))
 // parse application/json content from body
 app.use(express.json())
 
+// ================ SERVER HTTP REQUEST HANDLING FUNCTIONS =====================
+
 // serve index.html as content root
 app.get('/', function(req, res){
 
@@ -46,8 +48,6 @@ app.get('/', function(req, res){
     })
 })
 
-
-// ================ SERVER FUNCTIONS =====================
 /*
     LS
     Handles login post requests and assigns a sessionId to a user if the username/password input is correct
