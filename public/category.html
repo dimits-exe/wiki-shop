@@ -40,7 +40,7 @@
     </script>
 
     <script id="subcategories-menu-template" type="text/x-handlebars-template">
-        <fieldset>
+        <div class="graybox">
             <legend>Menu:</legend>
             {{#each subcategories}}
                 <div class="menu-option">
@@ -55,7 +55,7 @@
             </div>
             
             <button class="text-button" id="select-subcategory-button">Select</button>
-        </fieldset>
+        </div>
     </script>
 
 </head>
@@ -95,7 +95,7 @@
             </h2>
 
             <form id="login-form">
-                <fieldset>
+                <fieldset class="graybox">
                     <legend>
                         Login
                     </legend>
@@ -152,11 +152,11 @@
                     <!-- Handlebars content goes here-->
                 </nav>
 
-                <fieldset>
+                <div class="graybox">
                     <legend>Cart</legend>
                     <p><span id="cart-size-label">0</span> items in your cart </p>
                     <button class="text-button" id="checkout-button">My Cart</button>
-                </fieldset>
+                </div>
             </div>
         </article>
 
