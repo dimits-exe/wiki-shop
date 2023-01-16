@@ -1,24 +1,24 @@
+"use strict";
 const { User } = require('./modules/user.js')
 const { userDao } = require('./modules/userdao.js');
-const { CallTracker } = require('assert');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const app = express()
-const port = 8080
+const app = express();
 
+// set port for server
+const port = 8080;
+
+// initialize DAO
 const userdao = new userDao([]);
-testuser = new User("TestUser", "Admin1234");
+
+// create users and add them to dao
+let testuser = new User("TestUser", "Admin1234");
+let testuser2 = new User("NotTestUser", "Admin4321");
 userdao.addUser(testuser);
+userdao.addUser(testuser2);
 
-/*item1 = {product: {title: 'sex', id: '132'}, quantity: 1};
-item2 = {product: {title: 'sex2', id: '11'}, quantity: 1};
-testuser.addToCart(item1);
-testuser.addToCart(item1);
-console.log(testuser)
-testuser.addToCart(item1);
-console.log(testuser)*///FOR DEBUGGING PURPOSES
-
+// initialize server
 app.listen(port, () => console.log(`listening at ${port}`));
 
 /* 
