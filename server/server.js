@@ -46,8 +46,12 @@ app.get('/', function(req, res){
     })
 })
 
+
+// ================ SERVER FUNCTIONS =====================
 /*
     LS
+    Handles login post requests and assigns a sessionId to a user if the username/password input is correct
+    if not, it sends an error code based on what went wrong
 */
 app.post('/account/login', function(req, res){
     try{
@@ -58,7 +62,7 @@ app.post('/account/login', function(req, res){
             const user = userdao.getUserByUsername(username);
             const sessionId = {'sessionId': uuidv4()};
             user.sessionId=sessionId.sessionId;
-            user.emptyCart();
+            user.emptyCart(); //if a database was implemented we could use (username,sessionId) as the primary key and have 1 cart for each combination but for now we have to reset the cart array every time a new sessionId is assigned to a user
             res.send(sessionId);
         }
         else{
@@ -77,6 +81,8 @@ app.post('/account/login', function(req, res){
 
 /*
     CIS
+    Handles buy post requests by re-validating the user and if all goes well, adds item to user's cart and sends a success status code/message
+    Else, sends error code based on what went wrong
 */
 app.post('/cart/buy', function(req, res){
     const username = req.body.username;
@@ -101,6 +107,9 @@ app.post('/cart/buy', function(req, res){
 
 /*
     CSS
+    Handles get requests for the user's cart's size.
+    Sends a success code and the user's cart size if the user's username and sessionId match with the server's DAO's info.
+    Else, sends error code based on what went wrong
 */
 app.get('/cart/size/', function(req, res){
     try{
@@ -121,6 +130,9 @@ app.get('/cart/size/', function(req, res){
 
 /*
     CRS
+    Handles get requests for the user's cart info.
+    Sends a success code and a JS Object containing formatted information about the cart if the user's username and sessionId match with the server's DAO's info
+    Else, sends error code based on what went wrong
 */
 app.get('/cart/current', function(req, res){
     try{
