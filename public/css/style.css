@@ -70,7 +70,6 @@ header h1 {
 /* Links inside the navbar */
 #navbar a {
     float: left;
-    font-size: 16px;
     color: white;
     text-align: center;
     padding: 14px 16px;
@@ -93,7 +92,7 @@ header h1 {
 
 /* Dropdown button */
 .dropdown .dropbtn {
-    font-size: 16px;
+    font-size: 1.5rem;
     border: none;
     outline: none;
     color: white;
