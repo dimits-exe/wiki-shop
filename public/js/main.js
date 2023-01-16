@@ -37,15 +37,16 @@ initializePage()
 async function initializePage() {
     // load the rest of the UI before waiting for store to get loaded 
     
-    if (document.URL === HOST_URL + "/index.html") {
+    // quick and dirty way to check if we are in the homepage
+    if (CATEGORY_TEMPLATE !== null) {
         store = await Store.constructStore(CORS_PROXY_URL, SHOP_API_URL)
         // display main page
         displayTemplate(CATEGORY_TEMPLATE.textContent, { categories: store.categories }, CATEGORY_CONTAINER)
         SPINNER.hide()
     }
 
-    // display category page
-    if (document.URL.split("?")[0] === HOST_URL + "/category.html") {
+    // likewise check if we are in the categories page
+    if (SUBCATEGORY_TEMPLATE !== null) {
         const STORE_WRAPPER = new HideableWrapper(document.getElementById("store-container"), true)
         
         LOGIN_SHOW_PASS_BUTTON.onclick = e => {
