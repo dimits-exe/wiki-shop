@@ -18,18 +18,19 @@ const MENU_TEMPLATE = document.getElementById("subcategories-menu-template")
 const CART_SIZE_LABEL = document.getElementById("cart-size-label")
 const CHECKOUT_BUTTON = document.getElementById("checkout-button")
 
-const loginSuccess = document.getElementById("login-success-label")
-const loginForm = document.getElementById("login-form")
-const loginNameField = document.getElementById("login-username")
-const loginPassField = document.getElementById("login-password")
-const loginErrorLabel = document.getElementById("login-error-label")
-const loginButton = document.getElementById("login-button")
-const loginShowPassButton = document.getElementById("login-show-pass")
+const LOGIN_SUCCESS = document.getElementById("login-success-label")
+const LOGIN_FORM = document.getElementById("login-form")
+const LOGIN_NAME_FIELD = document.getElementById("login-username")
+const LOGIN_PASS_FIELD = document.getElementById("login-password")
+const LOGIN_ERROR_LABEL = document.getElementById("login-error-label")
+const LOGIN_BUTTON = document.getElementById("login-button")
+const LOGIN_SHOW_PASS_BUTTON = document.getElementById("login-show-pass")
 
 const SPINNER = new HideableWrapper(document.getElementById("loading-spinner"))
 
 let store = null
 let user = new User()
+
 
 initializePage()
 
@@ -47,12 +48,12 @@ async function initializePage() {
     if (document.URL.split("?")[0] === HOST_URL + "/category.html") {
         const STORE_WRAPPER = new HideableWrapper(document.getElementById("store-container"), true)
         
-        loginShowPassButton.onclick = e => {
+        LOGIN_SHOW_PASS_BUTTON.onclick = e => {
             e.preventDefault()
-            swapPasswordType(loginPassField)
+            swapPasswordType(LOGIN_PASS_FIELD)
         }
     
-        loginButton.onclick = async e => {
+        LOGIN_BUTTON.onclick = async e => {
             SPINNER.show()
             e.preventDefault()
             await login()
@@ -174,27 +175,27 @@ function cartSizeRequest() {
  * Implements the login procedure for a user.
  */
 async function login() {
-    if (checkValidity(loginForm.id)) {
+    if (checkValidity(LOGIN_FORM.id)) {
         let res = await loginRequest()
 
         if (!res.ok) {
             CHECKOUT_BUTTON.disabled = true
 
             let errorMsg = await res.text()
-            hideLabel(loginSuccess)
-            showLabel(loginErrorLabel, "Error while logging-in: " + errorMsg)
+            hideLabel(LOGIN_SUCCESS)
+            showLabel(LOGIN_ERROR_LABEL, "Error while logging-in: " + errorMsg)
             
         } else {
             CHECKOUT_BUTTON.disabled = false
 
             let sessionId = await res.json()
-            user.username = loginNameField.value
+            user.username = LOGIN_NAME_FIELD.value
 
             console.log(sessionId)
             user.sessionId = sessionId.sessionId
 
-            hideLabel(loginErrorLabel)
-            showLabel(loginSuccess, "Welcome " + user.username)
+            hideLabel(LOGIN_ERROR_LABEL)
+            showLabel(LOGIN_SUCCESS, "Welcome " + user.username)
         }
 
     }
@@ -206,7 +207,7 @@ async function login() {
  */
 function loginRequest() {
     const formData = {
-        username: loginNameField.value, password: loginPassField.value,
+        username: LOGIN_NAME_FIELD.value, password: LOGIN_PASS_FIELD.value,
     }
 
     return fetch(HOST_URL + "/account/login", {
