@@ -2,17 +2,16 @@
 <html lang="en">
 
 <head>
-    <title>Wiki Shop - Home</title>
-    <meta charset="UTF-8">
+    <title>Products</title>
 
-    <meta content="shop, e-shop, meteorology, hardware, home, nature" name="keywords" />
-    <meta content="The homepage of the wikishop store." name="description" />
-    <meta content="Dimitris Tsirmpas" name="author" />
-    <meta content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta content="shop, e-shop, wikipedia, products, store" name="keywords">
+    <meta content="The homepage of the wikishop store." name="description">
+    <meta content="Dimitris Tsirmpas" name="author">
     <link rel="icon" type="image/x-icon" href="resources/logo_small.ico">
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="js/main.js" type="module" defer></script>
+    <script src="js/main.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css">
 
     <script id="subcategory-template" type="text/x-handlebars-template">
@@ -24,7 +23,7 @@
                         {{title}}
                     </h3>
                     <a href="category.html?id={{id}}">
-                        <img alt={{title}} src={{image}}/>
+                        <img alt={{title}} src={{image}}>
                     </a>
                     <p>{{description}}</p>
 
@@ -64,8 +63,8 @@
 
     <header>
         <a href="index.html" id="header-logo">
-            <img alt="Faymetrics Logo" sizes="max-width:800px 624px, 854px" src="resources/logo.png"
-                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home" />
+            <img alt="Faymetrics Logo" sizes="(max-width:800px) 624px, 854px" src="resources/logo.png"
+                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home">
         </a>
         <nav id="navbar">
             <a href="index.html" tabindex="1">
@@ -106,15 +105,15 @@
                     <input autocomplete="username" id="login-username" name="username" pattern="^[a-zA-Z0-9._-]{8,}$"
                         placeholder="aNormalUsername" required
                         title="Any letter from a-z, can use underscores, points and dashes, at least 8 characters long"
-                        type="text" />
+                        type="text">
 
-                    <label for="signup-password">
+                    <label for="login-password">
                         Password:
                     </label>
-                    <input id="login-password" name="password" minlength="8" required type="password" />
+                    <input id="login-password" name="password" minlength="8" required type="password">
                     
                     <div class="showPassword">
-                        <button type="checkbox" id="login-show-pass" class="showPassword">
+                        <button id="login-show-pass" class="showPassword">
                             <img src="resources/eye.png" alt="show password">
                         </button>
                         Show Password
@@ -133,7 +132,7 @@
                 </button>
             </form>
 
-            <h3 id="login-success-label" class="success-label" class="hidden"></h3>
+            <h3 id="login-success-label" class="success-label hidden"></h3>
             <h3 id="login-error-label" class="error-label"></h3>
         </article>
 
@@ -153,7 +152,7 @@
                 </nav>
 
                 <div class="graybox">
-                    <legend>Cart</legend>
+                    <h4>Cart</h4>
                     <p><span id="cart-size-label">0</span> items in your cart </p>
                     <button class="text-button" id="checkout-button">My Cart</button>
                 </div>
@@ -165,28 +164,28 @@
 
     <footer>
         <a href="index.html" id="footer-logo">
-            <img alt="Faymetrics Logo" sizes="max-width:800px 624px, 854px" src="resources/logo.png"
-                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home" />
+            <img alt="Faymetrics Logo" sizes="(max-width:800px) 624px, 854px" src="resources/logo.png"
+                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home">
         </a>
         <address id="footer-address">
             <span>
-                <img alt="location" src="resources/map_pin_icon.png" />
+                <img alt="location" src="resources/map_pin_icon.png">
                 Address: Lamponos 9, 10434 Athens
             </span>
             <span>
-                <img alt="telephone" src="resources/phone_icon.png" />
+                <img alt="telephone" src="resources/phone_icon.png">
                 Telephone: +306942458
             </span>
             <span>
-                <img alt="email" src="resources/mail_icon.png" />
+                <img alt="email" src="resources/mail_icon.png">
                 Email: faymetrics@gmail.com
             </span>
         </address>
         <section class="social-media-bar">
-            <img alt="linkedin icon" src="resources\linkedin_gkiwnis.png" />
-            <img alt="twitter icon" src="resources\twitter.png" />
-            <img alt="instagram icon" src="resources\instagram.png" />
-            <img alt="facebook icon" class="cssex" src="resources\facebook.png" />
+            <img alt="linkedin icon" src="resources/linkedin_gkiwnis.png">
+            <img alt="twitter icon" src="resources/twitter.png">
+            <img alt="instagram icon" src="resources/instagram.png">
+            <img alt="facebook icon" class="cssex" src="resources/facebook.png">
         </section>
         <article id="footer-details">
             <p>
