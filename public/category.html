@@ -2,17 +2,16 @@
 <html lang="en">
 
 <head>
-    <title>Wiki Shop - Home</title>
-    <meta charset="UTF-8">
+    <title>Products</title>
 
-    <meta content="shop, e-shop, meteorology, hardware, home, nature" name="keywords" />
-    <meta content="The homepage of the wikishop store." name="description" />
-    <meta content="Dimitris Tsirmpas" name="author" />
-    <meta content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta content="shop, e-shop, wikipedia, products, store" name="keywords">
+    <meta content="The homepage of the wikishop store." name="description">
+    <meta content="Dimitris Tsirmpas" name="author">
     <link rel="icon" type="image/x-icon" href="resources/logo_small.ico">
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script src="js/main.js" type="text/javascript" defer></script>
+    <script src="js/main.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css">
 
     <script id="subcategory-template" type="text/x-handlebars-template">
@@ -24,17 +23,23 @@
                         {{title}}
                     </h3>
                     <a href="category.html?id={{id}}">
-                        <img alt={{title}} src={{image}}/>
+                        <img alt={{title}} src={{image}}>
                     </a>
                     <p>{{description}}</p>
-                    <var>{{cost}}$</var>
+
+                    <div class="product-footer">
+                        <var>{{cost}}$</var>
+                        <button data-product-id="{{id}}" class="purchase-button">
+                            <img src="resources/cart.png" alt="Add to cart">
+                        </button>
+                    </div>
                 </article>
             {{/each}}
         </article>
     </script>
 
     <script id="subcategories-menu-template" type="text/x-handlebars-template">
-        <fieldset>
+        <div class="graybox">
             <legend>Menu:</legend>
             {{#each subcategories}}
                 <div class="menu-option">
@@ -48,8 +53,8 @@
                 <input type="radio" id="data-category-all" name="categories" value="all" checked/>
             </div>
             
-            <button onclick="store.displayCategory()">Select</button>
-        </fieldset>
+            <button class="text-button" id="select-subcategory-button">Select</button>
+        </div>
     </script>
 
 </head>
@@ -58,49 +63,100 @@
 
     <header>
         <a href="index.html" id="header-logo">
-            <img alt="Faymetrics Logo" sizes="max-width:800px 624px, 854px" src="resources/logo.png"
-                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home" />
+            <img alt="Faymetrics Logo" sizes="(max-width:800px) 624px, 854px" src="resources/logo.png"
+                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home">
         </a>
         <nav id="navbar">
             <a href="index.html" tabindex="1">
                 Home
             </a>
-            <section class="dropdown" tabindex="2">
+            <div class="dropdown" tabindex="2">
                 <button class="dropbtn">
                     My Account
                 </button>
-                <section class="dropdown-content">
-                    <a href="login.html">
+                <div class="dropdown-content">
+                    <a>
                         Log In
                     </a>
-                    <a href="signup.html">
+                    <a>
                         Sign Up
                     </a>
-                </section>
-            </section>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
-        <h2>Welcome to the Wikipedia Store</h2>
-        <h4>Sponsored by Faymetrics®</h4>
 
         <article class="textbox">
-            <!--ChatGPT is a godsent-->
-            Welcome to Faymetrics! We are excited to offer a wide range of Wikipedia merchandise for all of your nerdy
-            needs. From t-shirts and hats to mugs and stickers, we have something for every Wikipedia fan. Our products
-            make great gifts for the knowledge-seekers in your life, or as a way to show off your love for the world's
-            largest encyclopedia. Thank you for visiting our store and we hope you find something you love!
+            <h2>
+                Login to your Faymetrics® account
+            </h2>
+
+            <form id="login-form">
+                <fieldset class="graybox">
+                    <legend>
+                        Login
+                    </legend>
+
+                    <label for="login-username">
+                        Username:
+                    </label>
+                    <input autocomplete="username" id="login-username" name="username" pattern="^[a-zA-Z0-9._-]{8,}$"
+                        placeholder="aNormalUsername" required
+                        title="Any letter from a-z, can use underscores, points and dashes, at least 8 characters long"
+                        type="text">
+
+                    <label for="login-password">
+                        Password:
+                    </label>
+                    <input id="login-password" name="password" minlength="8" required type="password">
+                    
+                    <div class="showPassword">
+                        <button id="login-show-pass" class="showPassword">
+                            <img src="resources/eye.png" alt="show password">
+                        </button>
+                        Show Password
+                    </div>
+
+
+                    <details>
+                        <summary>Forgot your password?⬇</summary>
+                        Faymetrics is not legally responsible for the loss of passwords and we are unwilling to assist
+                        with recovering or resetting them.
+                    </details>
+                </fieldset>
+
+                <button id="login-button" class="text-button" type="submit">
+                    Login
+                </button>
+            </form>
+
+            <h3 id="login-success-label" class="success-label hidden"></h3>
+            <h3 id="login-error-label" class="error-label"></h3>
         </article>
 
-        <article class="navigable-container">
-            <article id="store-container">
+        <div id="loading-spinner">
+            <img src="resources/spinner.gif" alt="loading">
+            <h3>Please wait...</h3>
+        </div>
+
+        <article id="store-container" class="navigable-container">
+            <article id="products-container">
                 <!-- Handlebars content goes here -->
             </article>
-    
-            <nav id="subcategories-menu">
-                <!-- Handlebars content goes here-->
-            </nav>
+            
+            <div id="sidebar">
+                <nav id="subcategories-menu">
+                    <!-- Handlebars content goes here-->
+                </nav>
+
+                <div class="graybox">
+                    <h4>Cart</h4>
+                    <p><span id="cart-size-label">0</span> items in your cart </p>
+                    <button class="text-button" id="checkout-button">My Cart</button>
+                </div>
+            </div>
         </article>
 
     </main>
@@ -108,28 +164,28 @@
 
     <footer>
         <a href="index.html" id="footer-logo">
-            <img alt="Faymetrics Logo" sizes="max-width:800px 624px, 854px" src="resources/logo.png"
-                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home" />
+            <img alt="Faymetrics Logo" sizes="(max-width:800px) 624px, 854px" src="resources/logo.png"
+                srcset="resources/logo_624p.png 624w, resources/logo.png 854w" title="Home">
         </a>
         <address id="footer-address">
             <span>
-                <img alt="location" src="resources/map_pin_icon.png" />
+                <img alt="location" src="resources/map_pin_icon.png">
                 Address: Lamponos 9, 10434 Athens
             </span>
             <span>
-                <img alt="telephone" src="resources/phone_icon.png" />
+                <img alt="telephone" src="resources/phone_icon.png">
                 Telephone: +306942458
             </span>
             <span>
-                <img alt="email" src="resources/mail_icon.png" />
+                <img alt="email" src="resources/mail_icon.png">
                 Email: faymetrics@gmail.com
             </span>
         </address>
         <section class="social-media-bar">
-            <img alt="linkedin icon" src="resources\linkedin_gkiwnis.png" />
-            <img alt="twitter icon" src="resources\twitter.png" />
-            <img alt="instagram icon" src="resources\instagram.png" />
-            <img alt="facebook icon" class="cssex" src="resources\facebook.png" />
+            <img alt="linkedin icon" src="resources/linkedin_gkiwnis.png">
+            <img alt="twitter icon" src="resources/twitter.png">
+            <img alt="instagram icon" src="resources/instagram.png">
+            <img alt="facebook icon" class="cssex" src="resources/facebook.png">
         </section>
         <article id="footer-details">
             <p>
